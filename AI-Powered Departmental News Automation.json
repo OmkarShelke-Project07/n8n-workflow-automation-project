@@ -1,0 +1,425 @@
+{
+  "name": "AI-Powered Departmental News Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1216,
+        400
+      ],
+      "id": "e342677a-c620-4bc1-adaa-f4642401d996",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the given {{ $json.data }} and find me the news and tools according to the given field. Make sure given news and tools related to the specific field. \n1. Software Development: \n2. Data Anaytics: \n3. Content & Design:\n4. Finance\nAccording to the given input summary the news as per the feild.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -704,
+        400
+      ],
+      "id": "d49c0651-b8f2-4805-81b4-b2bdb3db519d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "my_test_session"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -640,
+        592
+      ],
+      "id": "4d5116fe-4e50-4d56-8903-3fdc76f41659",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "content": "## 1. Schedule",
+        "height": 208,
+        "width": 166
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1248,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "3c85ea6f-e60c-4da5-a6af-4185e7ab11fc",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 2. Get News using APIs",
+        "height": 272,
+        "width": 208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1040,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "9e649842-b03c-42b3-a642-141a423f05c2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 3. Prompting and Structered the Data",
+        "height": 448,
+        "width": 352,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -768,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "ad76ebcf-9ba6-4a17-8fc0-1b3eab6f9191",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 4. Split the news for the different deparment",
+        "height": 336,
+        "width": 304,
+        "color": "#33646B"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "8d659870-959a-4d7e-b398-2e0842a71708",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "54b14a70-aded-40b5-b0c4-3cdd6ed8cf2d",
+              "name": "Softea Development",
+              "value": "={{ $json.output.cities[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "4815002d-e48f-48db-b9a5-d370ff3c8593",
+              "name": "Data Anaytics",
+              "value": "={{ $json.output.cities[1] }}",
+              "type": "string"
+            },
+            {
+              "id": "9111856e-2c4d-49e5-b9d9-293c09163d71",
+              "name": "Content & Design",
+              "value": "={{ $json.output.cities[2] }}",
+              "type": "string"
+            },
+            {
+              "id": "b6df81ad-2f34-4368-a962-e4eaaa41c3b6",
+              "name": "Finance",
+              "value": "={{ $json.output.cities[3] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -304,
+        400
+      ],
+      "id": "6720ce5c-1efd-49e5-837d-51d9a271049c",
+      "name": "Data Splits"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=Artificial+Intelligence",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -992,
+        400
+      ],
+      "id": "867047c3-a842-4f3b-a3b6-7178f92be81f",
+      "name": "Fetch the News Data"
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "AI news and updades",
+        "emailType": "text",
+        "message": "={{ $json['Data Anaytics'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        304
+      ],
+      "id": "7b36fffd-4ca8-40ba-a4a7-4ce512051574",
+      "name": "Data Anaytics",
+      "webhookId": "8229e268-ee37-4515-9c69-c42726499689",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pZfHxEuEpEi2lw2n",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "AI news and updates",
+        "emailType": "text",
+        "message": "={{ $json['Content & Design'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        496
+      ],
+      "id": "401358dc-f5ee-419a-9042-bd08577567e4",
+      "name": "Content & Design",
+      "webhookId": "e98fa214-df2b-4121-a59d-dab2eac28daa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pZfHxEuEpEi2lw2n",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "AI news and updates",
+        "emailType": "text",
+        "message": "={{ $json.Finance }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        672
+      ],
+      "id": "2320c71c-dc4b-4094-be59-2be2cb0b6de6",
+      "name": "Finance",
+      "webhookId": "7690a1cf-0f80-4de5-b7c4-1958af10b952",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pZfHxEuEpEi2lw2n",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 5. Sending news updates to different department",
+        "height": 832,
+        "width": 352,
+        "color": "#CE3636"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "80d11959-7c25-4f7d-ad2b-d59b46c47ea6",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -496,
+        592
+      ],
+      "id": "f4fd865c-de59-4454-ad9e-4e46545dfb26",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -752,
+        592
+      ],
+      "id": "2e3e5f65-1a14-43d2-9ffd-9ede42084d78",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "442o56KMsC6PWeqs",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "AI News and Updates",
+        "emailType": "text",
+        "message": "={{ $json['Tech Development'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        128
+      ],
+      "id": "c279c580-0f1e-43db-a81d-20c4f0e5e760",
+      "name": "Software Development",
+      "webhookId": "7cd1418d-4c2a-440e-ba2e-19c251f6c78b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pZfHxEuEpEi2lw2n",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch the News Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Data Splits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Splits": {
+      "main": [
+        [
+          {
+            "node": "Software Development",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Data Anaytics",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Content & Design",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Finance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch the News Data": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ac43ed0b-78e5-4ab3-a6c2-248fbc77bde6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4db524ab988e70da38e7d949859a2cb76ff0032f61c01e08edec972db2f9011c"
+  },
+  "id": "hpfCSqsrRUQFFI4H",
+  "tags": []
+}
