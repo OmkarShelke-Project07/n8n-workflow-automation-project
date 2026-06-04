@@ -1,0 +1,777 @@
+{
+  "name": "Lead Qualification Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "vapi-end-call",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        304
+      ],
+      "id": "fab28ff6-37b8-4022-99c5-a4364eec91d5",
+      "name": "Webhook",
+      "webhookId": "cf489c60-75b1-452d-ba46-75e9c8d4c804"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "07d06481-8436-44c9-a659-417209e32563",
+              "name": "Status",
+              "value": "={{ $json.body.message.artifact.variables.call.status }}",
+              "type": "string"
+            },
+            {
+              "id": "cda4181a-07f9-499e-9be8-706c6db4c58c",
+              "name": "Summary",
+              "value": "={{ $json.body.message.analysis.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "a56f083e-8a8d-43b8-aa54-e6fe794150f5",
+              "name": "Transcript",
+              "value": "={{ $json.body.message.assistant.analysisPlan.summaryPlan.messages[1].content }}",
+              "type": "string"
+            },
+            {
+              "id": "7cc24d98-0918-4b34-8dd7-bf495b0b90b5",
+              "name": "Call ID",
+              "value": "={{ $json.headers[\"x-call-id\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "e101a38c-e30c-4d46-ad2f-01fec7ae016e",
+              "name": "Type",
+              "value": "={{ $json.body.message.artifact.variables.call.type }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        336,
+        304
+      ],
+      "id": "f0800e54-dbdf-455b-a4ed-c300bbf06b76",
+      "name": "Filter the required"
+    },
+    {
+      "parameters": {
+        "content": "## Workflow 1\n- Trigger manually \n- The lead data is fetch from the Google sheet\n- Switch node is to check the Status is (Completed, Pending or Epmty)\n- Filter the phone no \n- If  phone no exist the HTTP node execute",
+        "height": 208,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "72543311-d28a-4143-a9df-88e0f70bd45a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        112,
+        0
+      ],
+      "id": "4fb9713d-5660-44d1-aede-2f5af243f579",
+      "name": "Manual Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bc2b529d-7440-4f7b-9f11-4e0fd541f101",
+              "name": "Phone no",
+              "value": "={{ '+91' + $json['Phone no'].toString().replace(/\\D/g, '').replace(/^1/, '') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        -112
+      ],
+      "id": "f9f56d76-948d-4c8e-aa21-76b1bf70d770",
+      "name": "Convert phone no to indian standard"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 5dcd76ab-18c8-475d-b275-433bd98597d8"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assistantId\": \"222fc73e-3616-468a-a4cf-599b64884db2\",\n  \"phoneNumberId\": \"96c60468-929b-4c3b-8dcb-46b58546fe78\",\n  \"customer\": {\n    \"number\": \"{{ $json['Phone no'] }}\",\n    \"name\": \"{{ $('Lead Data').item.json.Name }}\",\n    \"email\": \"{{ $('Lead Data').item.json['email ID'] }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1328,
+        -128
+      ],
+      "id": "bdb01b5d-607a-4024-a181-0f851c9495ce",
+      "name": "Vapi Assistant call the lead"
+    },
+    {
+      "parameters": {
+        "content": "## Workflow 2\n- Using webhook the data of the convarsation of user and assistant\n- Filter the required field from the webhook output \n- Check the status of the conversation\n- Update the google sheet with required output",
+        "width": 368
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -384,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "d6ff752b-e0ed-4cff-b931-7ff3317d172c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
+          "mode": "list",
+          "cachedResultName": "Lead Details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Outcome": "Not Qualified",
+            "Status": "Pending",
+            "row_number": 2
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone no",
+              "displayName": "Phone no",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email ID",
+              "displayName": "email ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Outcome",
+              "displayName": "Outcome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary ",
+              "displayName": "Summary ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Call ID",
+              "displayName": "Call ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        912,
+        384
+      ],
+      "id": "1db3efdf-1146-433b-a574-7a13077f6580",
+      "name": "Lead not qualified data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "75BdppvdkVG1Tpsj",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
+          "mode": "list",
+          "cachedResultName": "Lead Details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Summary ": "={{ $json.Summary }}",
+            "Outcome": "Qualified",
+            "Transcript": "={{ $json.Transcript }}",
+            "Call ID": "={{ $json['Call ID'] }}",
+            "Status": "=Completed",
+            "row_number": 2
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone no",
+              "displayName": "Phone no",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email ID",
+              "displayName": "email ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Company Name",
+              "displayName": "Company Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Outcome",
+              "displayName": "Outcome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Summary ",
+              "displayName": "Summary ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call ID",
+              "displayName": "Call ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        912,
+        192
+      ],
+      "id": "4ca963ed-a94b-4734-a992-20d780c0867c",
+      "name": "Lead qualified data",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "75BdppvdkVG1Tpsj",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
+          "mode": "list",
+          "cachedResultName": "Lead Details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        0
+      ],
+      "id": "9058d79b-aa86-4e26-a568-59917caa076e",
+      "name": "Lead Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "75BdppvdkVG1Tpsj",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Pending",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7a6f6c52-6451-47fb-aae9-e526948a4f02"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3f16b62f-4b9e-4b1d-89ae-67637cb5a6de",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f8211938-06e4-4f7f-80fd-fca5fbc1f2be",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Completed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "0bb4ac32-5e92-48a0-87a3-1b760d8b53d9",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0ca63fec-bf78-4406-b30f-764502375339",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "queued",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        304
+      ],
+      "id": "4b19fb26-20e5-4081-b9a6-3d4f5bd4f5dd",
+      "name": "Check the status"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2249af4c-2a79-4455-96e2-d06126e845f2",
+              "leftValue": "={{ $json['Phone no'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1056,
+        -112
+      ],
+      "id": "dbc83aa1-5152-48b2-9a64-5accaa09e821",
+      "name": "If phone no exit"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter the required",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter the required": {
+      "main": [
+        [
+          {
+            "node": "Check the status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert phone no to indian standard": {
+      "main": [
+        [
+          {
+            "node": "If phone no exit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vapi Assistant call the lead": {
+      "main": [
+        []
+      ]
+    },
+    "Lead qualified data": {
+      "main": [
+        []
+      ]
+    },
+    "Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Convert phone no to indian standard",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Convert phone no to indian standard",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Check the status": {
+      "main": [
+        [
+          {
+            "node": "Lead qualified data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Lead not qualified data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If phone no exit": {
+      "main": [
+        [
+          {
+            "node": "Vapi Assistant call the lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "c8bfcd20-cef8-4f28-8413-446997b496db",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd38f40470fb5b79becdc83aaf2f6dfcd35489aa39f9e392950289f27bfb216e"
+  },
+  "id": "msbprZifSu5395aN",
+  "tags": []
+}
