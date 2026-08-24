@@ -1,0 +1,1483 @@
+{
+  "name": "AI-Powered Invoice Processing Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "=Invoice Processing Error: File Could Not Be Read",
+        "emailType": "text",
+        "message": "=Hi team,\n\nAn invoice file was received but could not be read (corrupted file, unsupported encoding, or unreadable PDF).\n\nSource: {{ $json.Source || 'Unknown' }}\nError: {{ $json.error?.message || $json.error || 'Unknown extraction error' }}\n\nStatus: Error - File Extraction Failed\n\nPlease check the original file manually and re-upload it if needed.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -528,
+        992
+      ],
+      "id": "acecdf06-3a33-41ab-977d-a1afb965b8aa",
+      "name": "Notify Extraction Error",
+      "webhookId": "84dd30f2-f522-4c0f-b1b6-2fa849fd1d39",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "=Invoice Processing Error: AI Extraction Failed",
+        "emailType": "text",
+        "message": "=Hi team,\n\nThe AI model failed to extract structured data from an invoice (model/API error, timeout, or malformed response).\n\nError: {{ $json.error?.message || $json.error || 'Unknown AI extraction error' }}\n\nStatus: Error - AI Extraction Failed\n\nThis invoice needs to be entered manually since no data could be extracted.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        1008
+      ],
+      "id": "fb2f3392-0f51-457f-9a04-9f1643718d61",
+      "name": "Notify AI Extraction Failed",
+      "webhookId": "84cdebc4-d2a9-4ecf-b27c-7a8fd539eb89",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "=Invoice Processing Error: Failed to Save Data",
+        "emailType": "text",
+        "message": "=Hi team,\n\nThe workflow extracted/validated an invoice but failed to write it to Google Sheets (API error, rate limit, or permissions issue).\n\nInvoice Number: {{ $json['Invoice Number'] || $json.output?.['Invoice Number'] || 'Unknown' }}\nError: {{ $json.error?.message || $json.error || 'Unknown storage error' }}\n\nStatus: Error - Storage Failed\n\nPlease save this record manually and check the Google Sheets connection/credentials.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        1024
+      ],
+      "id": "ca70e53e-c547-41c3-b23c-85eb9aee1683",
+      "name": "Notify Storage Error",
+      "webhookId": "ad454513-d9d2-47bf-a77a-59e9b9aea6db",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1664,
+        688
+      ],
+      "id": "297242bb-4af7-41a7-840e-d206ee535f5a",
+      "name": "Download file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "R9x24cuR61fZFjgM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -848,
+        512
+      ],
+      "id": "c006bd2e-1e24-4518-900b-b62ca28a6ffe",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU",
+          "mode": "list",
+          "cachedResultName": "Invoice Data_PhazeAI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Invoice Number": "={{ $json['Invoice Number'] }}",
+            "Vendor Name": "={{ $json['Vendor Name'] }}",
+            "Invoice Date": "={{ $json['Invoice Date'] }}",
+            "Total Amount": "={{ $json['Total Amount'] }}",
+            "Tax Amount": "={{ $json['Tax Amount'] }}",
+            "Currency": "={{ $json.Currency }}",
+            "Status": "Needs Manual Review",
+            "List of item": "={{ $json['List of Items'] }}",
+            "Quantity": "={{ $json.Quantity }}",
+            "Processing timestamp": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "Invoice Number"
+          ],
+          "schema": [
+            {
+              "id": "Invoice Number",
+              "displayName": "Invoice Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Vendor Name",
+              "displayName": "Vendor Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Invoice Date",
+              "displayName": "Invoice Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Amount",
+              "displayName": "Total Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tax Amount",
+              "displayName": "Tax Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Currency",
+              "displayName": "Currency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "List of item",
+              "displayName": "List of item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Quantity",
+              "displayName": "Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processing timestamp",
+              "displayName": "Processing timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        720
+      ],
+      "id": "afb5eb87-46a1-4e3d-a8b2-3903049746f9",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vHendSFoGRFwM6CD",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "Action Needed: Invoice Requires Manual Review",
+        "emailType": "text",
+        "message": "=Hi team,  \nAn invoice was received but could not be fully processed automatically. Please review it manually.  \n\nInvoice Number: {{ $('checks If data is valid1').item.json['Invoice Number'] }}\nVendor: {{ $('checks If data is valid1').item.json['Vendor Name'] }}\nInvoice Date: {{ $('checks If data is valid1').item.json['Invoice Date'] }}\nTotal Amount: {{ $('checks If data is valid1').item.json['Tax Amount'] }}\nSource: {{ $json.Source || 'Unknown' }}\nStatus: Needs Manual Review  \n\nPlease review the file and update the record once verified.",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": []
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        720
+      ],
+      "id": "4435f028-ee13-4b11-8a8f-d3c001707458",
+      "name": "Send a message",
+      "webhookId": "553b5964-9880-4995-8069-c643fb57f291",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Receive Invoices\n\n• Accept invoice files from at least two sources, for example email attachment, webhook, Google Drive, or manual\nfile upload.",
+        "height": 896,
+        "width": 1008,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1936,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "a0c23fe6-ef10-4397-99b0-6535a93b2fb9",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Validate the Data\n• Check whether the invoice number, total amount and vendor name are present.\n• If important information is missing, mark the invoice as &quot;Needs Manual Review&quot;. Otherwise mark it as &quot;Processed&quot;.\n\nStore the Data\n• Save the extracted information in Google Sheets or a database.\n• Store at least: Invoice Number, Vendor Name, Invoice Date, Total Amount, Tax Amount, Currency and Status.\n\nNotification\n• Send a notification by email when an invoice is processed successfully.\n• Send a different notification when the invoice requires manual review.",
+        "height": 912,
+        "width": 1076,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "cecd6ed3-fe27-48f1-a035-af465f2215d0",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Error Handling\nHandle invalid files, AI extraction failures, missing invoice information and API failures.",
+        "height": 360,
+        "width": 2256,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1936,
+        960
+      ],
+      "typeVersion": 1,
+      "id": "92267e44-35f0-40fb-abed-aea62d8b3edb",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Process the Invoice\n\n• Read the received file and extract its content.\n• Identify and extract: Invoice Number, Vendor Name, Invoice Date, Total Amount, Tax Amount, Currency, and the\nlist of items.\n• The System must return this information in a structured format.",
+        "height": 896,
+        "width": 864,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -912,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "a03a3b9c-b9ac-4f7f-86d7-079055faa771",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "dup-cond-0001",
+              "leftValue": "={{ ($json['Invoice Number'] ?? '') }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        240,
+        496
+      ],
+      "id": "06f4e30b-831f-4a3f-b605-591b9e97becc",
+      "name": "Is Duplicate?1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dup-set-0001",
+              "name": "Invoice Number",
+              "value": "={{ $('AI Information extraction').item.json.output?.['Invoice Number'] }}",
+              "type": "string"
+            },
+            {
+              "id": "dup-set-0002",
+              "name": "Vendor Name",
+              "value": "={{ $('AI Information extraction').item.json.output?.['Vendor Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "dup-set-0003",
+              "name": "Status",
+              "value": "Duplicate - Skipped",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        336
+      ],
+      "id": "ad9669d1-a963-4412-ada0-ba786ae7d9f9",
+      "name": "Mark as Duplicate1"
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "=Duplicate Invoice Skipped: {{ $json['Invoice Number'] }}",
+        "emailType": "text",
+        "message": "=Hi team,\n\nAn incoming invoice matched an Invoice Number already on file and was NOT re-saved, to avoid duplicating records.\n\nInvoice Number: {{ $json['Invoice Number'] }}\nVendor: {{ $json['Vendor Name'] }}\nStatus: Duplicate - Skipped\n\nIf this is actually a new/different invoice, please check the sheet and update the Invoice Number before resubmitting.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        336
+      ],
+      "id": "5551b441-c96c-4f30-afe1-342e5d65f092",
+      "name": "Notify Duplicate1",
+      "webhookId": "46b1dbe0-f5dd-48d4-9b90-df05c0f60a7b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "valid-drive-0001",
+              "leftValue": "={{ $binary.data.mimeType }}",
+              "rightValue": "pdf",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1472,
+        688
+      ],
+      "id": "556051f8-505c-457e-bc92-c4fb9a820de4",
+      "name": "Validate File Type (Drive)1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "valid-form-0001",
+              "leftValue": "={{ $binary.Invoice_pdf_file.mimeType }}",
+              "rightValue": "pdf",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1632,
+        464
+      ],
+      "id": "dd11dbc5-c111-4e6c-8d86-179330b88dc7",
+      "name": "Validate File Type (Form)1"
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "Invoice Upload Rejected: Unsupported File Type",
+        "emailType": "text",
+        "message": "=Hi team,\n\nA file was submitted for invoice processing but was not a supported type (PDF) and could not be read.\n\nSource: {{ $json.Source || ($binary && $binary.data ? 'Google Drive' : 'Form') }}\nStatus: Error - Invalid File Type\n\nPlease check the original file and resubmit as a PDF.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1344,
+        272
+      ],
+      "id": "6f765703-9eae-4ff7-9981-ac284b2b9dcf",
+      "name": "Notify Invalid File1",
+      "webhookId": "bbe55cb6-c962-4de8-8563-95c6fec03de9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "=Invoice Workflow Failed: {{ $json.workflow.name }}",
+        "emailType": "text",
+        "message": "=The Invoice Processing workflow hit an unhandled error and stopped.\n\nWorkflow: {{ $json.workflow.name }}\nExecution: {{ $json.execution.id }}\nError: {{ $json.execution.error.message }}\n\nPlease check the execution log in n8n.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -1488,
+        1104
+      ],
+      "id": "9ff06ba3-0c4e-4699-9ee4-9e22cee0affa",
+      "name": "Notify Critical Error1",
+      "webhookId": "78d2fa75-b57f-4da5-9c0a-033b6eb69e1a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "Invoice_pdf_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1344,
+        448
+      ],
+      "id": "5c71a655-7ee1-4045-92dc-0c51c02054ef",
+      "name": "Extract from pdf (Form)1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1264,
+        688
+      ],
+      "id": "7f7b373c-be3e-4ffa-b473-7ba76b7fa768",
+      "name": "Extract from File (Drive)1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ddb18cb7-2a7e-4047-89a2-482df91a383f",
+              "name": "Invoice data (Google Drive)",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "5618a4b6-d158-420d-bb18-ececb9ae35a0",
+              "name": "Source",
+              "value": "Google drive",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1072,
+        688
+      ],
+      "id": "3f787ab7-924a-4f76-98ff-b431228f02d0",
+      "name": "Filter required data (Drive)1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "76686a0f-5dea-4ad0-92d4-6c5baa25c380",
+              "name": "Invoice Data",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "d41cc1cc-2be2-43aa-8c44-8241259c0908",
+              "name": "Source",
+              "value": "Form ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1120,
+        448
+      ],
+      "id": "f7c4d384-d6b8-443c-bdb4-1c4ec528d764",
+      "name": "Filter required data (Form)1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU",
+          "mode": "list",
+          "cachedResultName": "Invoice Data_PhazeAI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Invoice Number",
+              "lookupValue": "={{ $json['Invoice Number'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "alwaysOutputData": true,
+      "position": [
+        48,
+        496
+      ],
+      "id": "110d1089-bd07-4200-a5a9-6751258acb4c",
+      "name": "Verify the Data1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vHendSFoGRFwM6CD",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3905cadb-35b2-4bd9-b457-277b392bed10",
+              "name": "Invoice Number",
+              "value": "={{ $json.output?.['Invoice Number'] }}",
+              "type": "string"
+            },
+            {
+              "id": "830dfb88-123a-493a-9ee2-31bb61f0cc32",
+              "name": "Vendor Name",
+              "value": "={{ $json.output?.['Vendor Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "2a05bfc3-9613-41a1-9965-f65723d8c9bf",
+              "name": "Invoice Date",
+              "value": "={{ $json.output?.['Invoice Date'] }}",
+              "type": "string"
+            },
+            {
+              "id": "4e5a7824-ceb0-40d3-af12-c317c33c72c2",
+              "name": "Total Amount",
+              "value": "={{ $json.output?.['Total Amount'] }}",
+              "type": "string"
+            },
+            {
+              "id": "96a59b4c-37f0-46ac-bbf2-a8320e375f0f",
+              "name": "Tax Amount",
+              "value": "={{ $json.output?.['Tax Amount'] }}",
+              "type": "string"
+            },
+            {
+              "id": "99b0613c-e02d-4c41-a47d-0e691647be72",
+              "name": "Currency",
+              "value": "={{ $json.output?.Currency }}",
+              "type": "string"
+            },
+            {
+              "id": "d75a6385-b4ed-4391-a3cf-c1709d99255c",
+              "name": "List of Items",
+              "value": "={{ $json.output?.['List of items '] }}",
+              "type": "string"
+            },
+            {
+              "id": "c830e37c-375d-48e5-a6e4-a7e3fb6e076c",
+              "name": "Quantity",
+              "value": "={{ $json.output?.Quantity }}",
+              "type": "string"
+            },
+            {
+              "id": "conf-score-0001",
+              "name": "Confidence Score",
+              "value": "={{ $json.output?.['Confidence score'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        496
+      ],
+      "id": "3d69130d-3735-4135-abeb-c6b7590ac558",
+      "name": "AI output data filter1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "14677cba-0a62-499d-9b6e-09ddf822ae22",
+              "leftValue": "={{ $json['Invoice Number'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "4727bb09-2c3f-401f-9a1a-94d84cc34b00",
+              "leftValue": "={{ $json['Vendor Name'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "8884b3fc-7e41-4112-9659-0fe01e17da5f",
+              "leftValue": "={{ $json['Total Amount'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "conf-cond-0001",
+              "leftValue": "={{ Number($json['Confidence Score'] ?? 0) }}",
+              "rightValue": 0.7,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        496
+      ],
+      "id": "614dd1d5-2a0f-4490-9016-0de35861632b",
+      "name": "checks If data is valid1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU",
+          "mode": "list",
+          "cachedResultName": "Invoice Data_PhazeAI",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Invoice Number": "={{ $('AI Information extraction').item.json.output['Invoice Number'] }}",
+            "Vendor Name": "={{ $('AI Information extraction').item.json.output['Vendor Name'] }}",
+            "Invoice Date": "={{ $('AI Information extraction').item.json.output['Invoice Date'] }}",
+            "Total Amount": "={{ $('AI Information extraction').item.json.output['Total Amount'] }}",
+            "Tax Amount": "={{ $('AI Information extraction').item.json.output['Tax Amount'] }}",
+            "Currency": "={{ $('AI Information extraction').item.json.output.Currency }}",
+            "Status": "Processed",
+            "List of item": "={{ $('AI Information extraction').item.json.output['List of items '] }}",
+            "Quantity": "={{ $('AI Information extraction').item.json.output.Quantity }}",
+            "Processing timestamp": "={{ $now }}",
+            "Confidence Score": "={{ $('AI Information extraction').item.json.output?.['Confidence score'] }}"
+          },
+          "matchingColumns": [
+            "Invoice Number"
+          ],
+          "schema": [
+            {
+              "id": "Invoice Number",
+              "displayName": "Invoice Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Vendor Name",
+              "displayName": "Vendor Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Invoice Date",
+              "displayName": "Invoice Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total Amount",
+              "displayName": "Total Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tax Amount",
+              "displayName": "Tax Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Currency",
+              "displayName": "Currency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "List of item",
+              "displayName": "List of item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Quantity",
+              "displayName": "Quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Processing timestamp",
+              "displayName": "Processing timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Confidence Score",
+              "displayName": "Confidence Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        528,
+        512
+      ],
+      "id": "84452d14-e226-42e8-8f27-83d912ecc818",
+      "name": "Save the valid data1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vHendSFoGRFwM6CD",
+          "name": "Google Sheets account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "omkarshelke197@gmail.com",
+        "subject": "=Invoice {{ $json['Invoice Number'] }} Processed Successfully ",
+        "emailType": "text",
+        "message": "=Hi team,\n\nAn invoice has been processed successfully.\n\nInvoice Number: {{ $json['Invoice Number'] }}\nVendor Name: {{ $json['Vendor Name'] }}\nInvoice Date: {{ $json['Invoice Date'] }}\nList of items: {{ $json['List of item'] }}\nQuantity: Processed\nTotal Amount: {{ $json['Total Amount'] }}{{ $json.Currency }}\nTax Amount: {{ $json['Tax Amount'] }}{{ $json.Currency }}\nStatus: {{ $json.Status }}\n\nThe record has been saved to the invoice tracking sheet.\n\nThank You!\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        496
+      ],
+      "id": "9efce250-2448-4638-a2f0-996349254f55",
+      "name": "Processed the invoice successfully1",
+      "webhookId": "ee3e0a88-70f9-4d41-9382-5b844891ea6d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "dsLe1ms4SLxJwCSs",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        1104
+      ],
+      "id": "bbbbbcf1-b3df-46f3-9787-3882f6b9fc78",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1aUO_nhfZxCxTB1Znisx153HHQF_F4Fof",
+          "mode": "list",
+          "cachedResultName": "Phase AI _Task",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1aUO_nhfZxCxTB1Znisx153HHQF_F4Fof"
+        },
+        "event": "fileCreated",
+        "options": {
+          "fileType": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        688
+      ],
+      "id": "e1f4d6ca-922c-4b3e-896e-1013c9c4830d",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "R9x24cuR61fZFjgM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload a File",
+        "formDescription": "Upload a contains invoice data",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Invoice pdf file",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -1872,
+        464
+      ],
+      "id": "0a06ffd1-17c2-4028-87bf-bb1741476f11",
+      "name": "On form submission",
+      "webhookId": "8b0a0df7-4e74-4fe4-ab3a-bc72012b9d94"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -672,
+        704
+      ],
+      "id": "c72e85e6-3e10-4ab2-b259-b15981bbad14",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "X8nCy5Z8x0NayrlS",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=Source :\nGoogle Drive File: {{ $json['Invoice data (Google Drive)'] }},\nOn form submission file: {{ $json['Invoice Data'] }}\n\nIdentify and extract the given data from the invoice:\n1. Invoice Number\n2. Vendor Name\n3. Invoice Date \n4. Total Amount \n5. Tax Amount\n6. Currency\n7. List of item\n8. Confidence score\n\nNote: If the data is not avaliable then leave blank.\n",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "Invoice Number",
+              "description": "Contains invoice number",
+              "required": true
+            },
+            {
+              "name": "Vendor Name",
+              "description": "Name of the vendor",
+              "required": true
+            },
+            {
+              "name": "Invoice Date",
+              "description": "Date of the invoice",
+              "required": true
+            },
+            {
+              "name": "Total Amount",
+              "description": "the total amount in the invoice",
+              "required": true
+            },
+            {
+              "name": "Tax Amount",
+              "description": "The amount of the tax in the invoice",
+              "required": true
+            },
+            {
+              "name": "Currency",
+              "description": "In which currency the amount is in invoice",
+              "required": true
+            },
+            {
+              "name": "List of items ",
+              "description": "List of item in the invoice",
+              "required": true
+            },
+            {
+              "name": "Quantity",
+              "description": "List of items quantity",
+              "required": true
+            },
+            {
+              "name": "Confidence score",
+              "description": "write the confidence score of the AI given ouput",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        -672,
+        512
+      ],
+      "id": "e6d9b105-86ae-45ff-a6aa-a44c0e8490d7",
+      "name": "AI Information extraction",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "Validate File Type (Drive)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "AI Information extraction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Duplicate?1": {
+      "main": [
+        [
+          {
+            "node": "Mark as Duplicate1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Save the valid data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark as Duplicate1": {
+      "main": [
+        [
+          {
+            "node": "Notify Duplicate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate File Type (Drive)1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File (Drive)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Invalid File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate File Type (Form)1": {
+      "main": [
+        [
+          {
+            "node": "Extract from pdf (Form)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Invalid File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from pdf (Form)1": {
+      "main": [
+        [
+          {
+            "node": "Filter required data (Form)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Extraction Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File (Drive)1": {
+      "main": [
+        [
+          {
+            "node": "Filter required data (Drive)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Extraction Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter required data (Drive)1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter required data (Form)1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify the Data1": {
+      "main": [
+        [
+          {
+            "node": "Is Duplicate?1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Storage Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI output data filter1": {
+      "main": [
+        [
+          {
+            "node": "checks If data is valid1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "checks If data is valid1": {
+      "main": [
+        [
+          {
+            "node": "Verify the Data1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save the valid data1": {
+      "main": [
+        [
+          {
+            "node": "Processed the invoice successfully1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Storage Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Notify Critical Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Validate File Type (Form)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Information extraction",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Information extraction": {
+      "main": [
+        [
+          {
+            "node": "AI output data filter1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify AI Extraction Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "46089dd8-e794-449f-a95b-d7c028cf81b1",
+  "meta": {
+    "instanceId": "0289ee7aa20af5358e507c8edcc04743066127abf2efe0abe80cad0856baa0f4"
+  },
+  "nodeGroups": [],
+  "id": "fXgURgufOGyeI6xd",
+  "tags": []
+}
