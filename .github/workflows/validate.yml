@@ -1,0 +1,96 @@
+name: Validate Workflows
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Check for exposed secrets
+        run: |
+          echo "Checking for potential secrets in workflow files..."
+          # Check for common secret patterns in JSON files
+          if grep -r '"sk-"' workflows/ 2>/dev/null || \
+             grep -r '"Bearer ' workflows/ 2>/dev/null || \
+             grep -r '"password"' workflows/ 2>/dev/null || \
+             grep -r '"api_key"' workflows/ 2>/dev/null || \
+             grep -r '"access_token"' workflows/ 2>/dev/null; then
+            echo "WARNING: Potential secrets found in workflow files!"
+            grep -r '"sk-"' workflows/ || true
+            grep -r '"Bearer ' workflows/ || true
+            echo "These should be replaced with environment variable references."
+            exit 1
+          fi
+          echo "No obvious secrets detected."
+
+      - name: Validate JSON syntax
+        run: |
+          echo "Validating JSON syntax for all workflow files..."
+          FAILED=0
+          for file in workflows/*/workflow.json; do
+            if ! jq empty "$file" 2>/dev/null; then
+              echo "ERROR: Invalid JSON in $file"
+              FAILED=1
+            else
+              echo "OK: $file"
+            fi
+          done
+          if [ $FAILED -eq 1 ]; then
+            exit 1
+          fi
+
+      - name: Check workflow structure
+        run: |
+          echo "Checking workflow structure..."
+          for file in workflows/*/workflow.json; do
+            name=$(basename $(dirname $file))
+            echo "Checking $name..."
+            
+            # Check for required fields
+            if ! jq -e '.name' "$file" > /dev/null; then
+              echo "ERROR: Missing workflow name in $file"
+              exit 1
+            fi
+            
+            if ! jq -e '.nodes' "$file" > /dev/null; then
+              echo "ERROR: Missing nodes array in $file"
+              exit 1
+            fi
+            
+            if ! jq -e '.connections' "$file" > /dev/null; then
+              echo "ERROR: Missing connections in $file"
+              exit 1
+            fi
+            
+            echo "OK: $name has valid structure"
+          done
+
+      - name: Check for README files
+        run: |
+          echo "Checking for required README files..."
+          for dir in workflows/*/; do
+            if [ ! -f "$dir/README.md" ]; then
+              echo "WARNING: Missing README.md in $dir"
+            fi
+          done
+
+      - name: List workflow count
+        run: |
+          echo "Total workflows found:"
+          ls -d workflows/*/ | wc -l
