@@ -74,14 +74,14 @@
           "value": "1a1UorgfBXjQ0PapQERO0acY0JkGOknrOD_DINFBuzo4",
           "mode": "list",
           "cachedResultName": "DataStored",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a1UorgfBXjQ0PapQERO0acY0JkGOknrOD_DINFBuzo4/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": 211486918,
           "mode": "list",
           "cachedResultName": "UserData",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1a1UorgfBXjQ0PapQERO0acY0JkGOknrOD_DINFBuzo4/edit#gid=211486918"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=211486918"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -249,7 +249,8 @@
         "text": "=Welcome to {{ $('On form submission').item.json['Full Name'] }} to the team.",
         "otherOptions": {
           "includeLinkToWorkflow": false
-        }
+        },
+        "message": ""
       },
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.4,
@@ -270,9 +271,9 @@
     {
       "parameters": {
         "sendTo": "={{ $('Append or update row in sheet').item.json['Email ID'] }}",
-        "subject": "=Welcome to Our Team {{ $('Append or update row in sheet').item.json['Full Name'] }}",
+        "subject": "Thanks for contacting us",
         "emailType": "text",
-        "message": "=",
+        "message": "={{ $json.output || $json.text || 'Thank you for contacting us. We have received your enquiry and will get back to you shortly.' }}",
         "options": {
           "appendAttribution": false
         }
@@ -315,7 +316,7 @@
       {
         "json": {
           "Full Name": "Omkar",
-          "Email ID": "omkarshelke197@gmail.com",
+          "Email ID": "your-email@example.com",
           "Message": "Design a website, My budget is 10,000",
           "submittedAt": "2026-05-25T11:51:22.350+05:30",
           "formMode": "test"
@@ -391,7 +392,7 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
