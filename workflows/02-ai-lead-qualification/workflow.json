@@ -133,7 +133,9 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"assistantId\": \"222fc73e-3616-468a-a4cf-599b64884db2\",\n  \"phoneNumberId\": \"96c60468-929b-4c3b-8dcb-46b58546fe78\",\n  \"customer\": {\n    \"number\": \"{{ $json['Phone no'] }}\",\n    \"name\": \"{{ $('Lead Data').item.json.Name }}\",\n    \"email\": \"{{ $('Lead Data').item.json['email ID'] }}\"\n  }\n}",
-        "options": {}
+        "options": {
+          "timeout": 120000
+        }
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
@@ -166,22 +168,18 @@
           "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
           "mode": "list",
           "cachedResultName": "Lead Details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
-          "value": {
-            "Outcome": "Not Qualified",
-            "Status": "Pending",
-            "row_number": 2
-          },
+          "value": "[object Object]",
           "matchingColumns": [
             "row_number"
           ],
@@ -316,25 +314,18 @@
           "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
           "mode": "list",
           "cachedResultName": "Lead Details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
-          "value": {
-            "Summary ": "={{ $json.Summary }}",
-            "Outcome": "Qualified",
-            "Transcript": "={{ $json.Transcript }}",
-            "Call ID": "={{ $json['Call ID'] }}",
-            "Status": "=Completed",
-            "row_number": 2
-          },
+          "value": "[object Object]",
           "matchingColumns": [
             "row_number"
           ],
@@ -465,14 +456,14 @@
           "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
           "mode": "list",
           "cachedResultName": "Lead Details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "options": {}
       },
@@ -759,7 +750,7 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
