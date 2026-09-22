@@ -174,7 +174,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "AI news and updades",
         "emailType": "text",
         "message": "={{ $json['Data Anaytics'] }}",
@@ -198,7 +198,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "AI news and updates",
         "emailType": "text",
         "message": "={{ $json['Content & Design'] }}",
@@ -222,7 +222,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "AI news and updates",
         "emailType": "text",
         "message": "={{ $json.Finance }}",
@@ -292,7 +292,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "AI News and Updates",
         "emailType": "text",
         "message": "={{ $json['Tech Development'] }}",
@@ -410,7 +410,7 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
