@@ -135,6 +135,9 @@
         "jsonBody": "={\n  \"assistantId\": \"222fc73e-3616-468a-a4cf-599b64884db2\",\n  \"phoneNumberId\": \"96c60468-929b-4c3b-8dcb-46b58546fe78\",\n  \"customer\": {\n    \"number\": \"{{ $json['Phone no'] }}\",\n    \"name\": \"{{ $('Lead Data').item.json.Name }}\",\n    \"email\": \"{{ $('Lead Data').item.json['email ID'] }}\"\n  }\n}",
         "options": {
           "timeout": 120000
+        },
+        "headerParametersUi": {
+          "parameter": []
         }
       },
       "type": "n8n-nodes-base.httpRequest",
