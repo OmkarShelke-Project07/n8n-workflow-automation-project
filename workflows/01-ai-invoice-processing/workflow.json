@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "=Invoice Processing Error: File Could Not Be Read",
         "emailType": "text",
         "message": "=Hi team,\n\nAn invoice file was received but could not be read (corrupted file, unsupported encoding, or unreadable PDF).\n\nSource: {{ $json.Source || 'Unknown' }}\nError: {{ $json.error?.message || $json.error || 'Unknown extraction error' }}\n\nStatus: Error - File Extraction Failed\n\nPlease check the original file manually and re-upload it if needed.",
@@ -29,7 +29,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "=Invoice Processing Error: AI Extraction Failed",
         "emailType": "text",
         "message": "=Hi team,\n\nThe AI model failed to extract structured data from an invoice (model/API error, timeout, or malformed response).\n\nError: {{ $json.error?.message || $json.error || 'Unknown AI extraction error' }}\n\nStatus: Error - AI Extraction Failed\n\nThis invoice needs to be entered manually since no data could be extracted.",
@@ -55,7 +55,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "=Invoice Processing Error: Failed to Save Data",
         "emailType": "text",
         "message": "=Hi team,\n\nThe workflow extracted/validated an invoice but failed to write it to Google Sheets (API error, rate limit, or permissions issue).\n\nInvoice Number: {{ $json['Invoice Number'] || $json.output?.['Invoice Number'] || 'Unknown' }}\nError: {{ $json.error?.message || $json.error || 'Unknown storage error' }}\n\nStatus: Error - Storage Failed\n\nPlease save this record manually and check the Google Sheets connection/credentials.",
@@ -120,17 +120,17 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU",
+          "value": "YOUR_INVOICE_SHEET_ID",
           "mode": "list",
-          "cachedResultName": "Invoice Data_PhazeAI",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit?usp=drivesdk"
+          "cachedResultName": "YOUR_INVOICE_SHEET",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_INVOICE_SHEET_ID"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -269,7 +269,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "Action Needed: Invoice Requires Manual Review",
         "emailType": "text",
         "message": "=Hi team,  \nAn invoice was received but could not be fully processed automatically. Please review it manually.  \n\nInvoice Number: {{ $('checks If data is valid1').item.json['Invoice Number'] }}\nVendor: {{ $('checks If data is valid1').item.json['Vendor Name'] }}\nInvoice Date: {{ $('checks If data is valid1').item.json['Invoice Date'] }}\nTotal Amount: {{ $('checks If data is valid1').item.json['Tax Amount'] }}\nSource: {{ $json.Source || 'Unknown' }}\nStatus: Needs Manual Review  \n\nPlease review the file and update the record once verified.",
@@ -430,7 +430,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "=Duplicate Invoice Skipped: {{ $json['Invoice Number'] }}",
         "emailType": "text",
         "message": "=Hi team,\n\nAn incoming invoice matched an Invoice Number already on file and was NOT re-saved, to avoid duplicating records.\n\nInvoice Number: {{ $json['Invoice Number'] }}\nVendor: {{ $json['Vendor Name'] }}\nStatus: Duplicate - Skipped\n\nIf this is actually a new/different invoice, please check the sheet and update the Invoice Number before resubmitting.",
@@ -522,7 +522,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "Invoice Upload Rejected: Unsupported File Type",
         "emailType": "text",
         "message": "=Hi team,\n\nA file was submitted for invoice processing but was not a supported type (PDF) and could not be read.\n\nSource: {{ $json.Source || ($binary && $binary.data ? 'Google Drive' : 'Form') }}\nStatus: Error - Invalid File Type\n\nPlease check the original file and resubmit as a PDF.",
@@ -548,7 +548,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "=Invoice Workflow Failed: {{ $json.workflow.name }}",
         "emailType": "text",
         "message": "=The Invoice Processing workflow hit an unhandled error and stopped.\n\nWorkflow: {{ $json.workflow.name }}\nExecution: {{ $json.execution.id }}\nError: {{ $json.execution.error.message }}\n\nPlease check the execution log in n8n.",
@@ -665,17 +665,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU",
+          "value": "YOUR_INVOICE_SHEET_ID",
           "mode": "list",
-          "cachedResultName": "Invoice Data_PhazeAI",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit?usp=drivesdk"
+          "cachedResultName": "YOUR_INVOICE_SHEET",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_INVOICE_SHEET_ID"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "filtersUI": {
           "values": [
@@ -843,17 +843,17 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU",
+          "value": "YOUR_INVOICE_SHEET_ID",
           "mode": "list",
-          "cachedResultName": "Invoice Data_PhazeAI",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit?usp=drivesdk"
+          "cachedResultName": "YOUR_INVOICE_SHEET",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_INVOICE_SHEET_ID"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gp_ZOXVnsIe23j-jVg_ZNKiINDSNXZUALBhnx6-ucqU/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -1002,7 +1002,7 @@
     },
     {
       "parameters": {
-        "sendTo": "omkarshelke197@gmail.com",
+        "sendTo": "your-email@example.com",
         "subject": "=Invoice {{ $json['Invoice Number'] }} Processed Successfully ",
         "emailType": "text",
         "message": "=Hi team,\n\nAn invoice has been processed successfully.\n\nInvoice Number: {{ $json['Invoice Number'] }}\nVendor Name: {{ $json['Vendor Name'] }}\nInvoice Date: {{ $json['Invoice Date'] }}\nList of items: {{ $json['List of item'] }}\nQuantity: Processed\nTotal Amount: {{ $json['Total Amount'] }}{{ $json.Currency }}\nTax Amount: {{ $json['Tax Amount'] }}{{ $json.Currency }}\nStatus: {{ $json.Status }}\n\nThe record has been saved to the invoice tracking sheet.\n\nThank You!\n",
@@ -1052,7 +1052,7 @@
           "value": "1aUO_nhfZxCxTB1Znisx153HHQF_F4Fof",
           "mode": "list",
           "cachedResultName": "Phase AI _Task",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/1aUO_nhfZxCxTB1Znisx153HHQF_F4Fof"
+          "cachedResultUrl": "https://drive.google.com/drive/folders/YOUR_DRIVE_FOLDER_ID"
         },
         "event": "fileCreated",
         "options": {
