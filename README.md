@@ -1,4 +1,4 @@
-# AI Automation & Workflow Engineering Portfolio
+# AI Automation Engineering Portfolio
 
 A collection of hands-on **n8n AI automation workflows** demonstrating workflow orchestration, LLM integrations, RAG, voice AI, API integrations, document processing, lead automation, research automation, and content workflows.
 
