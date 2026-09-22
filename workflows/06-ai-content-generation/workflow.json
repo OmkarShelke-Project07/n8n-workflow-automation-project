@@ -127,14 +127,14 @@
           "value": "1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc",
           "mode": "list",
           "cachedResultName": "Log all outputs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -227,14 +227,14 @@
           "value": "1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc",
           "mode": "list",
           "cachedResultName": "Log all outputs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -567,7 +567,7 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate"
