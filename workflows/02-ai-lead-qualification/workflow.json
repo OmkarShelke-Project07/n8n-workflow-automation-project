@@ -122,7 +122,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 5dcd76ab-18c8-475d-b275-433bd98597d8"
+              "value": "Bearer {{$env.VAPI_ACCESS_TOKEN}}"
             },
             {
               "name": "Content-Type",
@@ -132,7 +132,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"assistantId\": \"222fc73e-3616-468a-a4cf-599b64884db2\",\n  \"phoneNumberId\": \"96c60468-929b-4c3b-8dcb-46b58546fe78\",\n  \"customer\": {\n    \"number\": \"{{ $json['Phone no'] }}\",\n    \"name\": \"{{ $('Lead Data').item.json.Name }}\",\n    \"email\": \"{{ $('Lead Data').item.json['email ID'] }}\"\n  }\n}",
+        "jsonBody": "={\n  \"assistantId\": \"{{$env.VAPI_ASSISTANT_ID}}\",\n  \"phoneNumberId\": \"{{$env.VAPI_PHONE_NUMBER_ID}}\",\n  \"customer\": {\n    \"number\": \"{{ $json['Phone no'] }}\",\n    \"name\": \"{{ $('Lead Data').item.json.Name }}\",\n    \"email\": \"{{ $('Lead Data').item.json['email ID'] }}\"\n  }\n}",
         "options": {
           "timeout": 120000
         },
