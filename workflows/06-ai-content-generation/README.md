@@ -1,130 +1,44 @@
 # AI Content Generation
 
-Multi-platform social media content automation using AI.
+This workflow uses Gemini to draft social media content from a topic and brief, then prepares posts for LinkedIn and Facebook. It also uses Pollinations.ai for an image and logs the post details in Google Sheets.
 
----
+I used it to explore how much of the repeatable content workflow can be connected in n8n. The generated copy and image should still be reviewed before anything is published.
 
-## 1. Business Problem
+## How it works
 
-Manual content creation is challenging:
+`Enter topic and brief → Generate copy → Format the content → Create image → Publish → Log result`
 
-- Time-consuming to create content for multiple platforms
-- Inconsistent branding across platforms
-- Difficult to maintain posting schedule
-- Hard to generate engaging content consistently
-- Image creation adds complexity
+The workflow is set up for platform-specific captions, hashtags, a call to action, and an image prompt. The exact publishing steps depend on the connected social accounts.
 
----
+## Tools used
 
-## 2. Solution
+- **n8n** — connects the steps
+- **Google Gemini** — drafts the content
+- **Pollinations.ai** — generates an image
+- **LinkedIn and Facebook** — publishing destinations
+- **Google Sheets** — records post details
 
-This workflow provides:
+## Input and output
 
-- AI-generated content for multiple platforms
-- Platform-specific formatting (LinkedIn, Facebook)
-- Automated image generation
-- Scheduled or on-demand execution
-- Content logging for analytics
+The input includes a topic, a short brief, and the tone to use. The workflow can prepare platform-specific copy and an image, publish through the connected accounts, and record the result in a sheet.
 
----
+## Before you run it
 
-## 3. Workflow Architecture
+1. Import the workflow into n8n.
+2. Add your Gemini and social platform credentials.
+3. Check the required fields and account permissions.
+4. Test with a harmless draft or test account before publishing publicly.
+5. Review the generated text and image yourself before posting.
 
-```mermaid
-flowchart TD
-    A[Manual Trigger] --> B[Set Topic]
-    B --> C{Input Valid?}
-    C -->|No| D[Stop Error]
-    C -->|Yes| E[LLM Content Gen]
-    E --> F[Structured Output]
-    F --> G[Generate Image]
-    G --> H[LinkedIn Post]
-    G --> I[Facebook Post]
-    H --> J[Log to Sheet]
-    I --> J
-```
+Social platform permissions and APIs can change, so check the connected account setup if publishing fails. Don't keep access tokens in the exported workflow.
 
----
+## Cases worth checking
 
-## 4. Workflow Steps
+Try a missing topic, an image-generation failure, and a failure on one of the publishing steps. Confirm what is logged and whether the other steps continue as expected.
 
-1. **Manual Trigger** - User provides topic, brief, and tone
-2. **Input Validation** - Checks required fields
-3. **Content Generation** - Gemini creates multi-platform content
-4. **Structured Output** - Parses captions, hashtags, CTA, image prompt
-5. **Image Generation** - Pollinations.ai creates featured image
-6. **LinkedIn Publish** - Posts with image to LinkedIn
-7. **Facebook Publish** - Posts to Facebook page
-8. **Logging** - Records posts in Google Sheets
+## Ideas for later
 
----
-
-## 5. AI Components
-
-- **Google Gemini** - Content generation (via Basic LLM Chain)
-- **Structured Output Parser** - Platform-specific formatting
-- **Pollinations.ai** - Free AI image generation
-
-### Generated Content
-
-| Element | Description |
-|---------|-------------|
-| Instagram Caption | Visual-first, emoji-heavy |
-| LinkedIn Caption | Professional, insightful |
-| Facebook Caption | Community-focused |
-| Hashtags | Platform-specific tags |
-| CTA | Call to action |
-| Image Prompt | For featured image generation |
-
----
-
-## 6. Integrations
-
-| Service | Purpose |
-|---------|---------|
-| LinkedIn | Publishing platform |
-| Facebook | Publishing platform |
-| Google Sheets | Content logging |
-| Pollinations.ai | Free image generation |
-| Google Gemini | Content AI |
-
----
-
-## 7. Input
-
-User-configured parameters:
-- **Topic**: Content subject
-- **Brief**: Additional details
-- **Tone**: Professional/casual/formal
-
----
-
-## 8. Output
-
-- LinkedIn post with image
-- Facebook post with image
-- Google Sheets log entry
-
----
-
-## 9. Error Handling
-
-| Scenario | Handling |
-|----------|----------|
-| Missing input | Stop with error message |
-| LinkedIn failure | Facebook still posts |
-| Facebook failure | LinkedIn still posts |
-| Image gen failure | Text-only post |
-| Sheet write failure | Posts still succeed |
-
----
-
-## 10. Future Improvements
-
-- [ ] Scheduling integration
-- [ ] Image alt text generation
-- [ ] Multi-image posts
-- [ ] Video content support
-- [ ] Thread/tweet generation
-- [ ] Engagement analytics
-- [ ] A/B content testing
+- Add an approval step before publishing.
+- Add scheduling and post-performance tracking.
+- Generate image alt text.
+- Test different caption styles and compare the results.
