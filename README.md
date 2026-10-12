@@ -1,161 +1,71 @@
-# AI Automation Engineering Portfolio
+# My n8n Workflow Projects
 
-A collection of hands-on **n8n AI automation workflows** demonstrating workflow orchestration, LLM integrations, RAG, voice AI, API integrations, document processing, lead automation, research automation, and content workflows.
+This repo is where I keep the n8n workflows I've been building for different automation tasks, from invoice processing and lead follow-up to asking questions about PDFs and creating social posts.
 
-> **Portfolio / demo repository** — workflows are provided as reusable examples and require your own credentials, resource IDs, and service configuration before execution.
+I'm using these projects to practise connecting AI models, APIs, and everyday business tools in one workflow. Each project has its own folder with the workflow export and notes about how it works.
 
-**n8n · AI Automation · LLMs · RAG · AI Agents · REST APIs · Webhooks · Google Workspace · Vapi**
+These are portfolio demos, so you'll need your own n8n instance, accounts, credentials, and resource IDs before running them.
 
----
-
-## Projects at a glance
-
-| Project | Business problem | AI / automation | Key integrations | Status |
-|---|---|---|---|---|
-| [AI Invoice Processing](./workflows/01-ai-invoice-processing/) | Manual invoice extraction and validation | Document intelligence | Gemini, Drive, Sheets, Gmail | Demo |
-| [AI Lead Qualification](./workflows/02-ai-lead-qualification/) | Manual lead screening calls | Voice AI + qualification | Vapi, Sheets, Webhooks | Demo |
-| [RAG Document Agent](./workflows/03-rag-document-agent/) | Manual document research | RAG + agent workflow | OpenAI, Pinecone | Demo |
-| [AI Lead Capture](./workflows/04-ai-lead-capture/) | Slow lead response | AI-generated follow-up | Gemini, Gmail, Sheets, Slack | Demo |
-| [Department Intelligence](./workflows/05-department-intelligence-agent/) | Manual news/research collection | AI research automation | Gemini, RSS, Gmail | Demo |
-| [AI Content Generation](./workflows/06-ai-content-generation/) | Repetitive social content work | AI content generation | Gemini, LinkedIn, Facebook, Sheets | Demo |
+**Tools I use across these projects:** n8n, Google Gemini, OpenAI, Pinecone, Vapi, Google Workspace, webhooks, and REST APIs.
 
 ---
 
-## What this repository demonstrates
+## Projects
 
-### AI Automation
-- LLM-powered data extraction and classification
-- Structured AI outputs
-- Prompt-driven content generation
-- Voice AI integration
-- Retrieval-augmented generation
-- AI-assisted decision workflows
-
-### Workflow Engineering
-- Webhook and schedule-based triggers
-- REST API integration
-- Data transformation and validation
-- Conditional routing
-- Error handling and retry-aware design
-- Google Workspace integrations
-- Workflow documentation and test cases
-
-### Engineering Practices
-- Sanitized workflow exports
-- Environment-based configuration
-- GitHub Actions validation
-- Reproducible setup documentation
-- Explicit demo/test status
-- Security and deployment guidance
+| Project | What it does | Main tools |
+|---|---|---|
+| [AI Invoice Processing](./workflows/01-ai-invoice-processing/) | Reads invoice details, checks the extracted data, and records the result | Gemini, Drive, Sheets, Gmail |
+| [AI Lead Qualification](./workflows/02-ai-lead-qualification/) | Calls a lead and records the call outcome | Vapi, Sheets, webhooks |
+| [RAG Document Agent](./workflows/03-rag-document-agent/) | Lets a user ask questions about uploaded documents | OpenAI, Pinecone |
+| [AI Lead Capture](./workflows/04-ai-lead-capture/) | Saves a new enquiry, drafts a welcome email, and notifies the team | Gemini, Gmail, Sheets, Slack |
+| [Department Intelligence](./workflows/05-department-intelligence-agent/) | Collects AI news and sends summaries to different teams | Gemini, RSS, Gmail |
+| [AI Content Generation](./workflows/06-ai-content-generation/) | Creates social media copy and sends posts to publishing platforms | Gemini, LinkedIn, Facebook, Sheets |
 
 ---
 
-## Architecture pattern
+## How the workflows are put together
 
-Most workflows follow this reusable pattern:
+Most of them follow a similar pattern: a trigger starts the workflow, the incoming data is checked and formatted, an AI model or API does its part, and the result is saved or sent somewhere.
 
-```text
-Trigger
-   ↓
-Input validation
-   ↓
-Transform / normalize
-   ↓
-AI processing
-   ↓
-Validation / decision
-   ↓
-External action
-   ↓
-Logging / notification
-```
+The details are different for each project. Some use a form or a manual trigger; others use a schedule or webhook.
 
-The exact architecture varies by project.
+## Running a workflow
 
----
+1. Open the project folder and read its README first.
+2. Use n8n Cloud or your own n8n instance.
+3. Import the workflow JSON file.
+4. Add your own credentials in n8n and replace any example IDs or placeholders.
+5. Test it with sample data before turning it on.
 
-## Getting started
+More setup notes are in the [setup guide](./docs/setup.md). There are also guides for [deployment](./docs/deployment/deployment-guide.md), [security](./docs/security/security-practices.md), [testing](./docs/testing/testing-strategy.md), and the [overall structure](./docs/architecture/overview.md).
 
-1. Review the project README before importing a workflow.
-2. Create your own n8n instance using n8n Cloud or self-hosted n8n.
-3. Import the required `workflow.json`.
-4. Reconnect all n8n credentials to your own accounts.
-5. Replace placeholder Sheet IDs, resource IDs, and environment-based configuration.
-6. Test with sample data before activating the workflow.
+## Credentials and security
 
-Detailed guidance:
+The [.env.example](./.env.example) file shows the kinds of settings these workflows may need. It is only a reference; it doesn't contain working credentials.
 
-- [Setup Guide](./docs/setup.md)
-- [Deployment Guide](./docs/deployment/deployment-guide.md)
-- [Security Practices](./docs/security/security-practices.md)
-- [Testing Strategy](./docs/testing/testing-strategy.md)
-- [Architecture Overview](./docs/architecture/overview.md)
+Please add your own credentials through n8n instead of putting API keys or tokens in workflow files. The exports in the current main branch are intended to be sanitized, but older commits may still contain values that were removed later. If a real key was ever exposed, revoke it and create a new one. More details are in the [security guide](./docs/security/security-practices.md).
 
----
+## Workflow checks
 
-## Environment configuration
-
-The repository includes [`.env.example`](./.env.example) as a reference for configuration.
-
-Important: n8n workflow exports are **sanitized** and do not contain usable API tokens or personal email addresses. You must configure credentials in your own n8n instance.
-
-Common configuration areas include:
-
-- Google / Gmail / Drive / Sheets credentials
-- OpenAI and Gemini credentials
-- Pinecone
-- Vapi
-- LinkedIn
-- Facebook
-- Slack
-- Sheet and resource IDs
-
----
-
-## Security note
-
-Never commit API keys, OAuth refresh tokens, access tokens, private webhook secrets, or production data.
-
-The current `main` branch contains sanitized workflow exports. Some older Git history may contain values that were removed later. Any credential that was ever exposed publicly should be **revoked and replaced**, even after it has been removed from the latest files.
-
-See [Security Practices](./docs/security/security-practices.md).
-
----
-
-## CI validation
-
-GitHub Actions validates:
-
-- JSON syntax
-- required workflow structure
-- secret-like values in workflow exports
-- presence of project READMEs
-- workflow count
+The GitHub Actions workflow checks the exported files for valid JSON, expected workflow structure, secret-like values, project READMEs, and the workflow count.
 
 ![Validate Workflows](https://github.com/OmkarShelke-Project07/n8n-workflow-automation-project/actions/workflows/validate.yml/badge.svg)
 
----
+## Project notes and tests
 
-## Project documentation
-
-| Workflow | README | Architecture | Tests |
+| Workflow | Notes | Architecture | Test cases |
 |---|---|---|---|
-| AI Invoice Processing | [View](./workflows/01-ai-invoice-processing/README.md) | [View](./workflows/01-ai-invoice-processing/architecture.md) | [View](./tests/invoice-processing/test-cases.md) |
-| AI Lead Qualification | [View](./workflows/02-ai-lead-qualification/README.md) | [View](./workflows/02-ai-lead-qualification/architecture.md) | [View](./tests/lead-qualification/test-cases.md) |
-| RAG Document Agent | [View](./workflows/03-rag-document-agent/README.md) | [View](./workflows/03-rag-document-agent/architecture.md) | [View](./tests/rag-agent/test-cases.md) |
-| AI Lead Capture | [View](./workflows/04-ai-lead-capture/README.md) | [View](./workflows/04-ai-lead-capture/architecture.md) | — |
-| Department Intelligence | [View](./workflows/05-department-intelligence-agent/README.md) | [View](./workflows/05-department-intelligence-agent/architecture.md) | — |
-| AI Content Generation | [View](./workflows/06-ai-content-generation/README.md) | [View](./workflows/06-ai-content-generation/architecture.md) | — |
+| AI Invoice Processing | [README](./workflows/01-ai-invoice-processing/README.md) | [Diagram](./workflows/01-ai-invoice-processing/architecture.md) | [Tests](./tests/invoice-processing/test-cases.md) |
+| AI Lead Qualification | [README](./workflows/02-ai-lead-qualification/README.md) | [Diagram](./workflows/02-ai-lead-qualification/architecture.md) | [Tests](./tests/lead-qualification/test-cases.md) |
+| RAG Document Agent | [README](./workflows/03-rag-document-agent/README.md) | [Diagram](./workflows/03-rag-document-agent/architecture.md) | [Tests](./tests/rag-agent/test-cases.md) |
+| AI Lead Capture | [README](./workflows/04-ai-lead-capture/README.md) | [Diagram](./workflows/04-ai-lead-capture/architecture.md) | — |
+| Department Intelligence | [README](./workflows/05-department-intelligence-agent/README.md) | [Diagram](./workflows/05-department-intelligence-agent/architecture.md) | — |
+| AI Content Generation | [README](./workflows/06-ai-content-generation/README.md) | [Diagram](./workflows/06-ai-content-generation/architecture.md) | — |
 
----
+## About
 
-## Author
-
-**Omkar Shelke**  
-[GitHub](https://github.com/OmkarShelke-Project07)
-
----
+I'm Omkar Shelke. You can find my other projects on [GitHub](https://github.com/OmkarShelke-Project07).
 
 ## License
 
-This project is licensed under the MIT License — see [LICENSE](./LICENSE).
+This project is licensed under the MIT License. See [LICENSE](./LICENSE).
