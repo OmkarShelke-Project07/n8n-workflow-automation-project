@@ -1,182 +1,53 @@
 # RAG Document Agent
 
-Enterprise document intelligence with Retrieval-Augmented Generation (RAG) using OpenAI and Pinecone.
+This project is a document Q&A workflow built with n8n, OpenAI, and Pinecone. The goal is to let someone ask a question about a PDF and get an answer based on the document content, instead of searching through the file manually.
 
----
+## How it works
 
-## 1. Business Problem
+There are two parts to the workflow.
 
-Organizations struggle with:
+**1. Add a document**
 
-- Finding relevant information in large document repositories
-- Getting accurate answers from internal documentation
-- Avoiding AI hallucinations in critical business decisions
-- Providing source attribution for AI-generated answers
-- Maintaining conversation context across questions
+`Upload PDF → Extract text → Split into chunks → Create embeddings → Store in Pinecone`
 
----
+**2. Ask a question**
 
-## 2. Solution
+`Question → Search Pinecone → Retrieve relevant text → Send context to the model → Generate an answer`
 
-This workflow provides:
+The retrieved text gives the model context for its answer. Responses should still be checked against the original document, especially when the information matters.
 
-- Document upload and vectorization pipeline
-- Semantic search using embeddings
-- Retrieval-augmented generation with sources
-- Conversational memory for context
-- Multi-model AI architecture (embedding + chat)
+## Tools used
 
----
+- **n8n** — connects the ingestion and chat steps
+- **OpenAI embeddings** — turns text into vectors for searching
+- **OpenAI chat model** — drafts an answer using retrieved context
+- **Pinecone** — stores and searches the document vectors
+- **n8n Chat Trigger** — receives questions
 
-## 3. Workflow Architecture
+The workflow notes currently reference `text-embedding-3-small` for embeddings and `gpt-4.1-mini` for answers. Check the model settings in the exported workflow before running it.
 
-```mermaid
-flowchart TB
-    subgraph Ingestion["Document Ingestion"]
-        A[Upload Form] --> B[PDF Loader]
-        B --> C[OpenAI Embeddings]
-        C --> D[Pinecone Store]
-    end
-    
-    subgraph Retrieval["Query & Retrieval"]
-        E[Chat Message] --> F[AI Agent]
-        F --> G[Vector Search]
-        G --> H[Pinecone Query]
-        H --> I[OpenAI Embeddings]
-    end
-    
-    subgraph Generation["Answer Generation"]
-        F --> J[OpenAI Chat]
-        J --> K[Context Assembly]
-        K --> L[Answer + Sources]
-    end
-```
+## Input and output
 
----
+- **Input:** a PDF to index, followed by a question about its content.
+- **Output:** a response based on the text returned by the document search.
 
-## 4. Workflow Steps
+## Before you run it
 
-### Ingestion Pipeline
+1. Import the workflow into n8n.
+2. Add your OpenAI and Pinecone credentials.
+3. Set the Pinecone index and confirm its dimension matches the embedding model.
+4. Check the upload and chat settings.
+5. Upload a small test PDF and ask questions whose answers you can verify.
 
-1. **Document Upload** - User uploads PDF via form
-2. **PDF Parsing** - Extract text content from PDF
-3. **Chunking** - Split into manageable chunks
-4. **Embedding Generation** - Convert to vectors using OpenAI
-5. **Storage** - Save to Pinecone vector database
+Keep credentials in n8n rather than in the exported workflow. Be careful about uploading confidential documents to external AI services.
 
-### Query Pipeline
+## Cases worth checking
 
-1. **User Question** - User sends message via chat
-2. **Query Embedding** - Convert question to vector
-3. **Similarity Search** - Find relevant chunks in Pinecone
-4. **Context Assembly** - Combine retrieved chunks
-5. **LLM Generation** - Generate answer with context
-6. **Memory Update** - Maintain conversation history
+Ask a question clearly answered by the PDF, one that is not covered, and one that needs information from different parts of the file. Also try an empty or unreadable PDF and check how the workflow responds.
 
----
+## Ideas for later
 
-## 5. AI Components
-
-- **OpenAI Embeddings** - Text vectorization (text-embedding-3-small)
-- **OpenAI Chat** - Answer generation (gpt-4.1-mini)
-- **AI Agent** - Orchestrates tool use and reasoning
-- **Vector Store Tool** - Retrieves relevant documents
-- **Memory Buffer** - Maintains conversation context
-
-### Models Used
-
-| Purpose | Model | Rationale |
-|---------|-------|-----------|
-| Embeddings | text-embedding-3-small | Cost-effective, high quality |
-| Chat | gpt-4.1-mini | Balance of speed and accuracy |
-| Agent | gpt-4.1-mini | Tool use capability |
-
----
-
-## 6. Integrations
-
-| Service | Purpose |
-|---------|---------|
-| OpenAI | Embeddings and chat completions |
-| Pinecone | Vector database |
-| n8n Chat Trigger | User interface |
-
----
-
-## 7. Input
-
-- **Ingestion**: PDF documents
-- **Query**: Natural language questions via chat
-
----
-
-## 8. Output
-
-- **Ingestion**: Vector embeddings stored in Pinecone
-- **Query**: AI-generated answers with source attribution
-
----
-
-## 9. Error Handling
-
-| Scenario | Handling |
-|----------|----------|
-| Empty retrieval | Agent indicates information not found |
-| API timeout | n8n retry logic |
-| Invalid PDF | PDF loader returns error |
-| Storage failure | n8n error trigger |
-
----
-
-## 10. Human-in-the-Loop
-
-- Users can review source documents
-- Conversation history allows for clarification
-- Low-confidence answers prompt for more context
-
----
-
-## 11. Security
-
-- **API Keys** - OpenAI and Pinecone credentials stored in n8n
-- **Document Privacy** - Documents stored in private vector index
-- **Access Control** - Chat interface can be made public or private
-- **Data Isolation** - Each deployment uses isolated index
-
----
-
-## 12. Testing
-
-| Test Case | Expected Result |
-|-----------|----------------|
-| Upload valid PDF | Vectors stored in Pinecone |
-| Ask about document content | Accurate answer with context |
-| Ask unrelated question | Agent indicates not found |
-| Upload empty PDF | Error handling |
-| Chat with context | Maintains conversation history |
-| Multiple documents | Cross-document retrieval works |
-
----
-
-## 13. Business Value
-
-- **Knowledge Access**: Instant access to company knowledge
-- **Time Savings**: No more searching through documents
-- **Accuracy**: Grounded in actual document content
-- **Consistency**: Same answers regardless of who asks
-- **Scalability**: Can handle growing document collections
-
----
-
-## 14. Future Improvements
-
-- [ ] Add source URL/document name in answers
-- [ ] Implement relevance score thresholds
-- [ ] Add document categorization
-- [ ] Multi-language support
-- [ ] User feedback mechanism for answer quality
-- [ ] Automatic document re-indexing on updates
-- [ ] Support for more file types (DOCX, TXT, MD)
-- [ ] Implement citation formatting
-- [ ] Add hallucination detection
-- [ ] Support for structured queries
+- Show the source document or page with each answer.
+- Add a relevance threshold for retrieved text.
+- Re-index documents when their contents change.
+- Add support for formats such as DOCX and TXT.
