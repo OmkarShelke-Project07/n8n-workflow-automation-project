@@ -1,180 +1,59 @@
 # AI Invoice Processing
 
-Automated invoice data extraction and validation using Google Gemini AI.
+I made this n8n workflow to explore how AI can help with the repetitive parts of invoice processing. It takes a PDF invoice, extracts the main details with Google Gemini, and sends the result to Google Sheets.
 
----
+The workflow is intended as a demo. Before using it, connect your own Google account and test it with sample invoices.
 
-## 1. Business Problem
+## What it does
 
-Manual invoice processing is time-consuming and error-prone:
+- Takes a PDF from Google Drive or a form submission.
+- Extracts details such as invoice number, vendor, date, tax, total, and currency.
+- Checks whether required details are missing.
+- Looks for a possible duplicate in Google Sheets.
+- Saves the result and sends an email based on the outcome.
+- Flags invoices that need someone to check them.
 
-- Finance teams spend hours manually entering invoice data
-- Human errors in data entry lead to payment delays
-- Duplicate invoices may be processed multiple times
-- Invalid or corrupted files cause workflow interruptions
-- No standardized validation leads to inconsistent records
+## How it works
 
----
+`Invoice PDF → Check file → Extract text → Gemini → Validate fields → Check duplicates → Google Sheets / email`
 
-## 2. Solution
+If the file is invalid or the extracted information needs checking, the workflow is intended to send it down a separate review or error path rather than treating it as a successful invoice.
 
-This workflow automates the entire invoice processing pipeline:
+## Tools used
 
-- Accepts invoices from Google Drive folder or web form
-- Extracts structured data using Google Gemini AI
-- Validates data completeness and confidence scores
-- Detects duplicate invoices automatically
-- Stores results in Google Sheets
-- Sends email notifications for success, review, or errors
+- **n8n** — connects and runs the steps
+- **Google Gemini** — extracts invoice details
+- **Google Drive** — invoice files
+- **Google Sheets** — stores results and helps check duplicates
+- **Gmail** — sends notifications
 
----
+## Data extracted
 
-## 3. Workflow Architecture
+| Field | Required |
+|---|---|
+| Invoice number | Yes |
+| Vendor name | Yes |
+| Invoice date | Yes |
+| Total amount | Yes |
+| Tax amount | Yes |
+| Currency | Yes |
+| Line items and quantity | Optional |
 
-```mermaid
-flowchart TD
-    A[Invoice Received] --> B{Validate File Type}
-    B -->|PDF| C[Extract Text]
-    B -->|Invalid| Z[Notify Invalid File]
-    C --> D[AI Data Extraction]
-    D --> E{Extraction Success?}
-    E -->|Yes| F[Validate Data]
-    E -->|No| Y[Notify AI Failed]
-    F --> G{Is Duplicate?}
-    G -->|No| H{Valid Invoice?}
-    G -->|Yes| W[Mark Duplicate]
-    H -->|Yes| I[Save to Sheet]
-    H -->|No| J[Manual Review]
-    I --> K[Notify Success]
-    J --> L[Notify Review]
-    W --> X[Notify Duplicate]
-    Z --> M[Error Log]
-    Y --> M
-```
+## Before you run it
 
----
+1. Import the workflow into your n8n instance.
+2. Connect Google Drive, Google Sheets, Gmail, and Gemini credentials.
+3. Update the folder, form, and sheet settings to match your own setup.
+4. Use sample PDFs first and check the extracted values against the original invoice.
 
-## 4. Workflow Steps
+Workflow exports should not contain your personal API keys or credentials. Keep those in n8n's credential settings.
 
-1. **Trigger** - Monitors Google Drive folder or accepts web form submission
-2. **File Validation** - Verifies file is PDF format
-3. **Text Extraction** - Extracts text content from PDF
-4. **AI Extraction** - Uses Gemini to extract structured invoice data
-5. **Data Validation** - Checks for required fields and confidence score
-6. **Duplicate Detection** - Queries Google Sheets to detect existing invoices
-7. **Data Storage** - Saves validated data to invoice tracking sheet
-8. **Notifications** - Sends appropriate email based on outcome
+## Cases worth checking
 
----
+Try a normal invoice, a PDF with a missing field, a duplicate invoice, a damaged PDF, and a non-PDF file. Check that each case ends up in the right place.
 
-## 5. AI Components
+## Ideas for later
 
-- **Google Gemini** - Powers the invoice data extraction
-- **Information Extractor Node** - Structured output with defined schema
-- **Confidence Scoring** - AI provides confidence level for each extraction
-
-### Extraction Fields
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| Invoice Number | Yes | Unique invoice identifier |
-| Vendor Name | Yes | Name of the vendor/supplier |
-| Invoice Date | Yes | Date on the invoice |
-| Total Amount | Yes | Total amount due |
-| Tax Amount | Yes | Tax portion |
-| Currency | Yes | Currency code (USD, INR, etc.) |
-| List of Items | No | Line items on invoice |
-| Quantity | No | Total quantity |
-| Confidence Score | Auto | AI confidence in extraction |
-
----
-
-## 6. Integrations
-
-| Service | Purpose |
-|---------|---------|
-| Google Drive | Invoice file storage and triggers |
-| Google Sheets | Invoice data storage |
-| Gmail | Email notifications |
-| Google Gemini | AI data extraction |
-
----
-
-## 7. Input
-
-- **Google Drive**: PDF files uploaded to monitored folder
-- **Web Form**: PDF file uploaded via form submission
-
----
-
-## 8. Output
-
-- **Google Sheets**: New row with invoice data and status
-- **Email**: Notification to finance team
-
----
-
-## 9. Error Handling
-
-| Error Type | Handling |
-|------------|----------|
-| Invalid file type | Email notification with error details |
-| Extraction failure | Email notification, workflow continues |
-| Missing required fields | Marked for manual review |
-| Duplicate invoice | Skipped, notification sent |
-| Storage failure | Error notification with details |
-
----
-
-## 10. Human-in-the-Loop
-
-Manual review is required when:
-
-- AI confidence score is below 0.7
-- Required fields are missing
-- Invoice is flagged as potential duplicate
-- Extraction fails completely
-
----
-
-## 11. Security
-
-- **OAuth2** - All Google integrations use OAuth2
-- **Webhook Security** - Unique webhook IDs per workflow
-- **Credential Management** - Credentials stored in n8n, not in workflow
-- **Least Privilege** - Minimal permissions required
-
----
-
-## 12. Testing
-
-| Test Case | Expected Result |
-|-----------|----------------|
-| Valid PDF invoice | Processed successfully |
-| Missing invoice number | Flagged for manual review |
-| Duplicate invoice | Skipped with notification |
-| Corrupt PDF | Error notification sent |
-| Invalid AI response | Validation failure, manual review |
-| Drive API failure | Error notification sent |
-| Non-PDF file | Rejected with notification |
-
----
-
-## 13. Business Value
-
-- **Time Savings**: Eliminates manual data entry
-- **Accuracy**: AI-powered extraction reduces human errors
-- **Consistency**: Standardized processing pipeline
-- **Auditability**: Complete record of all invoices
-- **Speed**: Near-instant processing vs. hours manual
-
----
-
-## 14. Future Improvements
-
-- [ ] Add OCR for scanned documents
-- [ ] Implement invoice approval workflow
-- [ ] Add vendor validation against master list
-- [ ] Create payment scheduling integration
-- [ ] Add expense categorization
-- [ ] Implement multi-currency conversion
+- Improve extraction from scanned invoices with OCR.
+- Check vendor details against a separate vendor list.
+- Add an approval step before an invoice is processed further.
