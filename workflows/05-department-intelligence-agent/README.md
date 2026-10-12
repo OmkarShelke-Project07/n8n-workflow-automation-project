@@ -1,114 +1,38 @@
 # Department Intelligence Agent
 
-Automated AI news aggregation and departmental briefing system.
+This workflow collects AI-related news from an RSS feed, uses Gemini to summarise and sort the items, and prepares email briefings for different departments.
 
----
+I wanted to try a way of sending teams a shorter, more relevant update instead of asking everyone to read through the same list of news stories.
 
-## 1. Business Problem
+## How it works
 
-Teams struggle with:
+`Weekly schedule → Read RSS feed → Summarise and categorise → Split by department → Send email`
 
-- Keeping up with industry news and trends
-- Manual research taking significant time
-- Different teams needing different information
-- Information overload from multiple sources
-- Time zone differences in news consumption
+The current workflow notes describe four categories: software development, data analytics, content and design, and finance.
 
----
+## Tools used
 
-## 2. Solution
+- **n8n** — runs the scheduled workflow
+- **Google News RSS** — provides the news feed
+- **Google Gemini** — summarises and categorises items
+- **Gmail** — sends the briefings
 
-This workflow provides:
+## Before you run it
 
-- Scheduled automated execution (weekly)
-- AI-powered news extraction and analysis
-- Department-specific briefings
-- Structured data presentation
-- Email delivery to relevant teams
+1. Import the workflow into n8n.
+2. Connect your Gemini and Gmail credentials.
+3. Check the RSS feed and the department categories.
+4. Review the schedule and email recipients.
+5. Test with a small set of items and make sure stories reach the intended category.
 
----
+The exported workflow may need changes to fit your own departments and recipients. Keep credentials and internal email addresses out of public workflow files.
 
-## 3. Workflow Architecture
+## Cases worth checking
 
-```mermaid
-flowchart TD
-    A[Schedule Trigger] --> B[Fetch AI News RSS]
-    B --> C[AI Analysis Agent]
-    C --> D[Structured Output Parser]
-    D --> E{Department Split}
-    E -->|Software Dev| F1[Email Dev Team]
-    E -->|Data Analytics| F2[Email Data Team]
-    E -->|Content| F3[Email Content Team]
-    E -->|Finance| F4[Email Finance Team]
-```
+Check what happens when the feed has no items, the AI response can't be parsed, or the email step fails. Also review the summaries to make sure they reflect the source articles accurately.
 
----
+## Ideas for later
 
-## 4. Workflow Steps
-
-1. **Schedule Trigger** - Runs weekly on Monday at 10 AM
-2. **RSS Fetch** - Gets AI news from Google News RSS
-3. **AI Analysis** - Gemini categorizes and summarizes news
-4. **Structured Parsing** - Extracts structured output with categories
-5. **Department Split** - Routes news to appropriate team
-6. **Email Delivery** - Sends tailored briefings
-
----
-
-## 5. AI Components
-
-- **Google Gemini** - News categorization and summarization
-- **Output Parser** - Structured extraction for departments
-- **AI Agent** - Orchestrates the analysis
-
-### Categories
-
-- Software Development
-- Data Analytics
-- Content & Design
-- Finance
-
----
-
-## 6. Integrations
-
-| Service | Purpose |
-|---------|---------|
-| n8n Schedule | Weekly trigger |
-| Google News RSS | News source |
-| Gmail | Email delivery |
-| Google Gemini | AI analysis |
-
----
-
-## 7. Input
-
-- News RSS feed (Google News for AI topic)
-- Scheduled execution
-
----
-
-## 8. Output
-
-- Department-specific email briefings
-- Structured news summaries by category
-
----
-
-## 9. Error Handling
-
-| Scenario | Handling |
-|----------|----------|
-| RSS fetch failure | Workflow continues with empty data |
-| AI failure | Email not sent |
-| Invalid output | Email shows parsing error |
-
----
-
-## 10. Future Improvements
-
-- [ ] Multiple news sources
-- [ ] Customizable categories per team
-- [ ] Sentiment analysis
-- [ ] Competitor monitoring
-- [ ] Historical trend tracking
+- Pull from more than one news source.
+- Let each team choose its own topics.
+- Keep a history of earlier briefings so recurring themes are easier to spot.
