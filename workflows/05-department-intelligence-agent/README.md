@@ -1,38 +1,40 @@
 # Department Intelligence Agent
 
-This workflow collects AI-related news from an RSS feed, uses Gemini to summarise and sort the items, and prepares email briefings for different departments.
+Collects news items from an RSS feed, uses Google Gemini to summarise and categorise them, and sends email briefings to different department audiences.
 
-I wanted to try a way of sending teams a shorter, more relevant update instead of asking everyone to read through the same list of news stories.
+## At a glance
 
-## How it works
+- **Input:** News items from the configured RSS source, collected on a schedule.
+- **Processing:** Fetch the feed, summarise and classify items, then route the results by category.
+- **Output:** Email briefings for Software Development, Data Analytics, Content & Design, and Finance.
+- **Tools:** n8n Schedule Trigger, HTTP Request/RSS source, Google Gemini, Gmail.
 
-`Weekly schedule → Read RSS feed → Summarise and categorise → Split by department → Send email`
+## Workflow outline
 
-The current workflow notes describe four categories: software development, data analytics, content and design, and finance.
+`Scheduled run → Fetch RSS feed → Summarise and categorise → Split by department → Send briefing emails`
 
-## Tools used
+The export includes a separate email node for each of the four categories. The summaries and routing decisions should be checked against the original articles before this is used as an internal briefing system.
 
-- **n8n** — runs the scheduled workflow
-- **Google News RSS** — provides the news feed
-- **Google Gemini** — summarises and categorises items
-- **Gmail** — sends the briefings
+## Configuration
 
-## Before you run it
+1. Import `workflow.json` into n8n.
+2. Connect Google Gemini and Gmail credentials.
+3. Review the configured RSS URL, schedule, output parser, department categories, and the recipient address in each email node.
+4. Replace example recipient addresses with approved team distribution lists.
+5. Test with a small set of items and verify that summaries are relevant, source links are preserved where expected, and each message goes to the intended audience.
 
-1. Import the workflow into n8n.
-2. Connect your Gemini and Gmail credentials.
-3. Check the RSS feed and the department categories.
-4. Review the schedule and email recipients.
-5. Test with a small set of items and make sure stories reach the intended category.
+## Manual test checklist
 
-The exported workflow may need changes to fit your own departments and recipients. Keep credentials and internal email addresses out of public workflow files.
+- [ ] A normal feed run creates department-specific summaries.
+- [ ] An empty feed does not produce misleading empty briefings.
+- [ ] Malformed or unexpected model output is detected during testing.
+- [ ] A mail delivery error appears in execution history.
+- [ ] Each category is routed to the correct test recipient.
 
-## Cases worth checking
+## Notes and limitations
 
-Check what happens when the feed has no items, the AI response can't be parsed, or the email step fails. Also review the summaries to make sure they reflect the source articles accurately.
+- Summaries can omit context or make classification mistakes. Keep original article links available for verification.
+- Review schedule and recipients before activating the workflow.
+- Potential improvements: combine multiple feeds, let teams configure topics, and retain a history of briefing summaries.
 
-## Ideas for later
-
-- Pull from more than one news source.
-- Let each team choose its own topics.
-- Keep a history of earlier briefings so recurring themes are easier to spot.
+**Related files:** [Architecture](./architecture.md)
