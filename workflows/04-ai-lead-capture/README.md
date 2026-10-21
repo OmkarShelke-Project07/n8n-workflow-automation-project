@@ -1,42 +1,40 @@
 # AI Lead Capture
 
-This workflow handles a new enquiry from a form. It saves the details in Google Sheets, uses Gemini to draft a welcome email, sends the email through Gmail, and notifies the team in Slack.
+Captures a new enquiry, stores the lead details, drafts a welcome email with Google Gemini, sends the email through Gmail, and notifies the team in Slack.
 
-The point is to keep the first follow-up from getting missed when someone fills out a form.
+## At a glance
 
-## How it works
+- **Input:** Form submission with the person's name, email address, and enquiry message.
+- **Processing:** Save lead details, generate a draft tailored to the enquiry, and send notifications.
+- **Output:** Lead record in Google Sheets, welcome email, and Slack notification.
+- **Tools:** n8n form trigger, Google Gemini, Google Sheets, Gmail, Slack.
 
-`Form submission → Save lead → Draft email with Gemini → Send email → Notify team in Slack`
+## Workflow outline
 
-## Tools used
+`New form submission → Save lead → Generate welcome message → Send email → Notify team`
 
-- **n8n** — runs the workflow
-- **Google Forms or n8n Form** — collects the enquiry
-- **Google Sheets** — stores the lead details
-- **Google Gemini** — drafts the welcome email
-- **Gmail** — sends the email
-- **Slack** — notifies the team
+Review the generated email before using this with live leads. Configure a safe fallback message or an error branch if the AI service is unavailable.
 
-## Information collected
+## Configuration
 
-The form asks for the person's name, email address, and message. The workflow saves those details and uses the message to make the email more relevant.
+1. Import `workflow.json` into n8n.
+2. Connect Google Gemini, Google Sheets, Gmail, and Slack credentials in n8n.
+3. Replace the spreadsheet ID placeholder with your own ID. Confirm the sheet tab and column names match the workflow mapping.
+4. Review the form field names, recipient address mappings, email wording, and Slack destination.
+5. Submit a test enquiry using an inbox and Slack channel you control; confirm the lead is saved and that the right messages are sent.
 
-## Before you run it
+## Manual test checklist
 
-1. Import the workflow into n8n.
-2. Connect your Google, Gemini, and Slack accounts.
-3. Check the form fields and the Google Sheet columns.
-4. Send a test enquiry using an email address you can access.
-5. Check the email and Slack notification before using the workflow with real enquiries.
+- [ ] A normal form submission is recorded with the expected fields.
+- [ ] An invalid or missing email address is handled safely.
+- [ ] An AI model failure does not silently discard a lead.
+- [ ] A Sheets, Gmail, or Slack failure is visible in the execution history.
+- [ ] Duplicate form submissions do not create unwanted duplicate follow-ups.
 
-Use a fallback email if you want the workflow to continue when AI text generation fails. Keep credentials and personal information out of the exported workflow.
+## Notes and limitations
 
-## Cases worth checking
+- Generated text may be inaccurate or unsuitable; review message content and recipients.
+- Keep personal information and credentials out of exports, source control, and public screenshots.
+- Potential improvements: lead categorization, CRM integration, follow-up reminders, and deduplication by email.
 
-Try a normal enquiry, an invalid email address, an AI request that fails, and a Google Sheets or email step that can't complete. Make sure failures are visible rather than silently losing the enquiry.
-
-## Ideas for later
-
-- Add lead categories based on the message.
-- Connect the workflow to a CRM.
-- Add a follow-up reminder if the lead has not received a response.
+**Related files:** [Architecture](./architecture.md)
