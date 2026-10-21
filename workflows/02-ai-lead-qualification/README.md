@@ -1,53 +1,38 @@
 # AI Lead Qualification
 
-This workflow connects n8n with Vapi so a lead can be contacted by an AI voice assistant, and the call result can be saved back to Google Sheets.
+Connects Google Sheets with Vapi to contact an eligible lead using an AI voice assistant and write the resulting call information back to a sheet.
 
-I built it as a demo of connecting a phone call to the rest of a lead follow-up process. It still needs your own credentials and phone setup before it can be run.
+## At a glance
 
-## What it does
+- **Input:** Lead row with contact details, a phone number, and a status that allows calling.
+- **Processing:** Check the row and phone number, send a call request to Vapi, then receive call updates through an n8n webhook.
+- **Output:** Call status and the available call details recorded in Google Sheets, with qualified and not-qualified paths.
+- **Tools:** n8n, Vapi, Google Sheets, HTTP Request, webhooks.
 
-- Reads lead details from Google Sheets.
-- Checks the lead's current status and phone number.
-- Starts a call through Vapi when the row is ready.
-- Receives the call update through a webhook.
-- Saves the call status and available details back to the sheet.
+## Workflow outline
 
-The idea is to keep the call outcome with the lead record so someone can review it and decide what to do next.
+`Eligible lead in Sheets → Validate status and number → Vapi call request → Vapi event webhook → Interpret outcome → Update lead record`
 
-## How it works
+The workflow includes a manual-start path for initiating eligible leads and a webhook path for call events. The exact fields available for a transcript or summary depend on the event payload returned by Vapi.
 
-`Google Sheets → Check status and phone → Vapi call → Webhook → Read call result → Update sheet`
+## Configuration
 
-## Tools used
+1. Import `workflow.json` into n8n and reconnect Google Sheets credentials.
+2. Configure a test Google Sheet and replace the placeholder spreadsheet ID in all Sheets nodes. Confirm the sheet names and columns match the mapping.
+3. Configure your Vapi assistant and phone number, then provide `VAPI_ACCESS_TOKEN`, `VAPI_ASSISTANT_ID`, and `VAPI_PHONE_NUMBER_ID` in the n8n runtime if environment expressions are supported. Otherwise, replace these expressions with an authentication method supported by your deployment.
+4. Configure the webhook URL in Vapi to point to the production or test webhook URL shown by n8n. Test the callback before processing multiple leads.
+5. Start with a phone number you control and verify the call request, callback, and sheet update.
 
-- **n8n** — runs the workflow
-- **Vapi** — handles the voice call
-- **Google Sheets** — stores lead details and call results
-- **Webhook** — receives the call completion event
-- **Google Gemini** — available for conversation analysis where configured
+## Manual test checklist
 
-## Input and output
+- [ ] A lead with a valid number and eligible status starts a call.
+- [ ] A row with a missing or invalid phone number is not called.
+- [ ] A lead already marked as completed is not accidentally called again.
+- [ ] A completed, failed, or unanswered call is reflected accurately in the sheet.
+- [ ] The webhook handles the event payload actually sent by Vapi.
 
-The input is a sheet row with lead details, including a phone number and current status.
+## Consent and safety
 
-The workflow can write details such as the call outcome, summary, transcript, call ID, and status back to the sheet, depending on what the call event returns.
+Only contact people who have consented to receive calls. Follow the laws and platform rules that apply to your audience and location. Do not use real customer contact information in public examples or screenshots.
 
-## Before you run it
-
-1. Import the workflow into n8n.
-2. Add your Vapi and Google Sheets credentials.
-3. Check the phone-number format and configure the assistant in Vapi.
-4. Set up the webhook URL and make sure Vapi can reach it.
-5. Test with a number you control before using any real leads.
-
-Only call people who have agreed to be contacted, and follow the phone, privacy, and consent rules that apply to your use case. Don't put real lead data or API keys in the workflow export.
-
-## Cases worth checking
-
-Try a lead with a valid number, a missing number, a row already marked completed, and a call that doesn't complete. Confirm the sheet status makes sense in each case.
-
-## Ideas for later
-
-- Add a clear lead-scoring rule.
-- Handle missed or failed calls with a retry path.
-- Connect the results to a CRM or meeting calendar.
+**Related files:** [Architecture](./architecture.md) · [Test cases](../../tests/lead-qualification/test-cases.md)
