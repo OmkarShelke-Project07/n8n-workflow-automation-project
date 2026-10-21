@@ -168,10 +168,10 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Lead Details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -301,23 +301,17 @@
         384
       ],
       "id": "1db3efdf-1146-433b-a574-7a13077f6580",
-      "name": "Lead not qualified data",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "75BdppvdkVG1Tpsj",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
+      "name": "Lead not qualified data"
     },
     {
       "parameters": {
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Lead Details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -444,22 +438,16 @@
       ],
       "id": "4ca963ed-a94b-4734-a992-20d780c0867c",
       "name": "Lead qualified data",
-      "alwaysOutputData": false,
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "75BdppvdkVG1Tpsj",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
+      "alwaysOutputData": false
     },
     {
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1VIw-dGb9AZKlEcTC_AUqge00NtY_87x1vG5HkQZv5p0",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Lead Details",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -477,13 +465,7 @@
         0
       ],
       "id": "9058d79b-aa86-4e26-a568-59917caa076e",
-      "name": "Lead Data",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "75BdppvdkVG1Tpsj",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
+      "name": "Lead Data"
     },
     {
       "parameters": {
@@ -637,7 +619,6 @@
       "name": "If phone no exit"
     }
   ],
-  "pinData": {},
   "connections": {
     "Webhook": {
       "main": [
@@ -761,11 +742,5 @@
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false
   },
-  "versionId": "c8bfcd20-cef8-4f28-8413-446997b496db",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "cd38f40470fb5b79becdc83aaf2f6dfcd35489aa39f9e392950289f27bfb216e"
-  },
-  "id": "msbprZifSu5395aN",
   "tags": []
 }
