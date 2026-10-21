@@ -188,13 +188,7 @@
       ],
       "id": "7b36fffd-4ca8-40ba-a4a7-4ce512051574",
       "name": "Data Anaytics",
-      "webhookId": "8229e268-ee37-4515-9c69-c42726499689",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "pZfHxEuEpEi2lw2n",
-          "name": "Gmail OAuth2 API"
-        }
-      }
+      "webhookId": "8229e268-ee37-4515-9c69-c42726499689"
     },
     {
       "parameters": {
@@ -212,13 +206,7 @@
       ],
       "id": "401358dc-f5ee-419a-9042-bd08577567e4",
       "name": "Content & Design",
-      "webhookId": "e98fa214-df2b-4121-a59d-dab2eac28daa",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "pZfHxEuEpEi2lw2n",
-          "name": "Gmail OAuth2 API"
-        }
-      }
+      "webhookId": "e98fa214-df2b-4121-a59d-dab2eac28daa"
     },
     {
       "parameters": {
@@ -236,13 +224,7 @@
       ],
       "id": "2320c71c-dc4b-4094-be59-2be2cb0b6de6",
       "name": "Finance",
-      "webhookId": "7690a1cf-0f80-4de5-b7c4-1958af10b952",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "pZfHxEuEpEi2lw2n",
-          "name": "Gmail OAuth2 API"
-        }
-      }
+      "webhookId": "7690a1cf-0f80-4de5-b7c4-1958af10b952"
     },
     {
       "parameters": {
@@ -282,13 +264,7 @@
         592
       ],
       "id": "2e3e5f65-1a14-43d2-9ffd-9ede42084d78",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "442o56KMsC6PWeqs",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
+      "name": "Google Gemini Chat Model"
     },
     {
       "parameters": {
@@ -306,16 +282,9 @@
       ],
       "id": "c279c580-0f1e-43db-a81d-20c4f0e5e760",
       "name": "Software Development",
-      "webhookId": "7cd1418d-4c2a-440e-ba2e-19c251f6c78b",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "pZfHxEuEpEi2lw2n",
-          "name": "Gmail OAuth2 API"
-        }
-      }
+      "webhookId": "7cd1418d-4c2a-440e-ba2e-19c251f6c78b"
     }
   ],
-  "pinData": {},
   "connections": {
     "Schedule Trigger": {
       "main": [
@@ -415,11 +384,5 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "ac43ed0b-78e5-4ab3-a6c2-248fbc77bde6",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "4db524ab988e70da38e7d949859a2cb76ff0032f61c01e08edec972db2f9011c"
-  },
-  "id": "hpfCSqsrRUQFFI4H",
   "tags": []
 }
