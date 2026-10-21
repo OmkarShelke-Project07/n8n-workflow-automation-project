@@ -1,59 +1,51 @@
 # AI Invoice Processing
 
-I made this n8n workflow to explore how AI can help with the repetitive parts of invoice processing. It takes a PDF invoice, extracts the main details with Google Gemini, and sends the result to Google Sheets.
+Extracts key fields from invoice PDFs, checks the extracted data, and records the result in Google Sheets. The workflow demonstrates how an AI extraction step can fit into a controlled document-processing process.
 
-The workflow is intended as a demo. Before using it, connect your own Google account and test it with sample invoices.
+## At a glance
 
-## What it does
+- **Input:** PDF invoice received through the configured Google Drive trigger or n8n form.
+- **Processing:** Extract PDF text, use Google Gemini to structure invoice fields, validate required data, and check for a possible duplicate.
+- **Output:** A spreadsheet record and an email notification or manual-review path, depending on the result.
+- **Tools:** n8n, Google Gemini, Google Drive, Google Sheets, Gmail.
 
-- Takes a PDF from Google Drive or a form submission.
-- Extracts details such as invoice number, vendor, date, tax, total, and currency.
-- Checks whether required details are missing.
-- Looks for a possible duplicate in Google Sheets.
-- Saves the result and sends an email based on the outcome.
-- Flags invoices that need someone to check them.
+## Workflow outline
 
-## How it works
+`Invoice PDF → File validation → PDF text extraction → Gemini extraction → Required-field checks → Duplicate check → Save / review / notify`
 
-`Invoice PDF → Check file → Extract text → Gemini → Validate fields → Check duplicates → Google Sheets / email`
+The workflow includes error paths for unreadable files, AI extraction failures, storage errors, invalid files, and duplicate candidates. Review the original invoice before relying on extracted amounts or tax values.
 
-If the file is invalid or the extracted information needs checking, the workflow is intended to send it down a separate review or error path rather than treating it as a successful invoice.
+## Data fields
 
-## Tools used
-
-- **n8n** — connects and runs the steps
-- **Google Gemini** — extracts invoice details
-- **Google Drive** — invoice files
-- **Google Sheets** — stores results and helps check duplicates
-- **Gmail** — sends notifications
-
-## Data extracted
-
-| Field | Required |
+| Field | Purpose |
 |---|---|
-| Invoice number | Yes |
-| Vendor name | Yes |
-| Invoice date | Yes |
-| Total amount | Yes |
-| Tax amount | Yes |
-| Currency | Yes |
-| Line items and quantity | Optional |
+| Invoice number | Identify the invoice and support duplicate checks |
+| Vendor name | Identify the supplier |
+| Invoice date | Record the invoice date |
+| Total amount, tax amount, currency | Capture the main financial values |
+| Line items and quantity | Supporting invoice details when available |
+| Status and processing timestamp | Track the workflow result |
 
-## Before you run it
+## Configuration
 
-1. Import the workflow into your n8n instance.
-2. Connect Google Drive, Google Sheets, Gmail, and Gemini credentials.
-3. Update the folder, form, and sheet settings to match your own setup.
-4. Use sample PDFs first and check the extracted values against the original invoice.
+1. Import `workflow.json` into your n8n instance.
+2. Reconnect Google Drive, Google Sheets, Gmail, and Google Gemini credentials in the relevant nodes.
+3. Replace `YOUR_INVOICE_SHEET_ID` / `YOUR_GOOGLE_SHEET_ID` and `YOUR_GOOGLE_DRIVE_FOLDER_ID` with your own resource IDs. Confirm the sheet tab and column names match the node mappings.
+4. Review the form fields, file-type conditions, recipient email addresses, and notification messages.
+5. Start with sample invoices and inspect each node's output before activating the workflow.
 
-Workflow exports should not contain your personal API keys or credentials. Keep those in n8n's credential settings.
+## Manual test checklist
 
-## Cases worth checking
+- [ ] A readable PDF contains the expected invoice fields.
+- [ ] A PDF with missing required information is sent for review.
+- [ ] A duplicate invoice is identified using the configured matching fields.
+- [ ] An invalid or unreadable file follows the error path.
+- [ ] A Google Sheets or model error is visible and does not appear to be a successful processing result.
 
-Try a normal invoice, a PDF with a missing field, a duplicate invoice, a damaged PDF, and a non-PDF file. Check that each case ends up in the right place.
+## Notes and limitations
 
-## Ideas for later
+- AI extraction can be wrong; compare totals, tax, vendor, and invoice number against the original file.
+- The workflow export is inactive and requires your own credentials and IDs.
+- Possible next improvements: OCR for image-only PDFs, vendor-master validation, and human approval before downstream accounting actions.
 
-- Improve extraction from scanned invoices with OCR.
-- Check vendor details against a separate vendor list.
-- Add an approval step before an invoice is processed further.
+**Related files:** [Architecture](./architecture.md) · [Test cases](../../tests/invoice-processing/test-cases.md)
