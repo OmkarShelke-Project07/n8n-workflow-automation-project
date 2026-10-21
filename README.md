@@ -75,6 +75,34 @@ A portfolio of six n8n workflow examples showing how AI models, APIs, webhooks, 
   </tr>
 </table>
 
+## 🖼️ Workflow screenshots
+
+These screenshots show the workflow layouts in n8n. Open a project guide to review its nodes, connections, configuration, and testing notes.
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>AI Invoice Processing</h3>
+      <img src="./docs/images/ai-invoice-processing.png" alt="AI invoice processing workflow in n8n" width="100%" />
+      <p><a href="./workflows/01-ai-invoice-processing/">View project guide →</a></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>AI Voice Lead Qualification</h3>
+      <img src="./docs/images/ai-voice-lead-qualification.png" alt="AI voice lead qualification workflow in n8n" width="100%" />
+      <p><a href="./workflows/02-ai-lead-qualification/">View project guide →</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top">
+      <h3>RAG Document Agent</h3>
+      <img src="./docs/images/rag-document-agent.png" alt="RAG document agent workflow in n8n" width="100%" />
+      <p><a href="./workflows/03-rag-document-agent/">View project guide →</a></p>
+    </td>
+  </tr>
+</table>
+
+> Screenshots are visual references; they do not by themselves prove that a workflow ran successfully. See each project guide for setup and testing instructions.
+
 ## 🧭 How the workflows fit together
 
 The projects follow a common automation pattern. Individual projects may use only some of these stages.
