@@ -1,81 +1,56 @@
 # Testing Strategy
 
-## Overview
+The repository includes lightweight automated checks and manual test checklists. The checks validate the files in Git; they do not run the workflows against live integrations.
 
-This document describes the testing approach for the workflow portfolio.
+## 1. Repository checks
 
-## Test Levels
+The GitHub Actions workflow checks:
 
-### 1. Unit Tests
-Individual node testing:
-- Input/output validation
-- Expression correctness
-- Field mapping accuracy
+- Workflow JSON syntax.
+- Basic workflow structure (`name`, `nodes`, and `connections`).
+- That exported workflows are inactive.
+- That each workflow folder contains a README.
+- Several common hard-coded secret and personal-email patterns.
 
-### 2. Integration Tests
-End-to-end workflow testing:
-- Trigger -> All Nodes -> Output
-- Cross-service communication
-- Data flow validation
+These checks do not prove that a workflow imports cleanly in every n8n version, that credentials work, or that a complete execution succeeds.
 
-### 3. Manual Tests
-Human verification:
-- Visual workflow inspection
-- Output quality assessment
-- Edge case handling
+## 2. Manual workflow tests
 
-## Test Documentation
+For each workflow:
 
-Each workflow has:
-- `test-cases.md` - Test case matrix
-- Scenario documentation
-- Edge case handling
-- Performance benchmarks
+1. Import the JSON into a test n8n instance.
+2. Reconnect credentials and configure test-only resource IDs.
+3. Read the project README and confirm that node fields match the test input.
+4. Run sample inputs through success and failure paths.
+5. Inspect node outputs, the final result in the connected service, and the execution history.
+6. Leave the workflow inactive until outputs and recipients are verified.
 
-## Test Environment
+Use synthetic or non-sensitive information wherever possible. For voice and publishing workflows, use destinations and phone numbers you control.
 
-### Required Setup
-- n8n instance
-- Test Google account
-- Test API credentials
-- Test data files
+## Test documentation
 
-### Data Isolation
-- Separate test sheets
-- Sandbox APIs where possible
-- Test-only credentials
+| Workflow | Test documentation |
+|---|---|
+| AI Invoice Processing | [Invoice test cases](../../tests/invoice-processing/test-cases.md) |
+| AI Lead Qualification | [Lead qualification test cases](../../tests/lead-qualification/test-cases.md) |
+| RAG Document Agent | [RAG test cases](../../tests/rag-agent/test-cases.md) |
+| AI Lead Capture | Manual checklist in the [project README](../../workflows/04-ai-lead-capture/README.md) |
+| Department Intelligence Agent | Manual checklist in the [project README](../../workflows/05-department-intelligence-agent/README.md) |
+| AI Content Generation | Manual checklist in the [project README](../../workflows/06-ai-content-generation/README.md) |
 
-## Test Execution
+## Recommended test scenarios
 
-### Manual Testing
-1. Import workflow to n8n
-2. Configure with test credentials
-3. Trigger with test data
-4. Verify expected output
-5. Check error handling
+- Valid input and expected output.
+- Missing or malformed fields.
+- External API timeout, rate limit, or authentication failure.
+- Duplicate input where relevant.
+- Partial failure in a downstream service.
+- Incorrect or empty model output.
+- Confirmation that an unsuccessful run is not recorded as a successful result.
 
-### Automated Testing
-GitHub Actions validate:
-- JSON syntax
-- Workflow structure
-- No exposed secrets
-- Required files present
+## Future improvements
 
-## Coverage
-
-| Workflow | Test Cases | Coverage |
-|----------|-----------|----------|
-| Invoice Processing | 8 cases | Core paths |
-| Lead Qualification | 7 cases | Core paths |
-| RAG Agent | 7 cases | Core paths |
-| Lead Capture | 5 cases | Core paths |
-| Department News | 4 cases | Basic |
-| Content Generation | 5 cases | Core paths |
-
-## Future Improvements
-
-- [ ] Automated test execution
-- [ ] Mock data generators
-- [ ] Performance benchmarks
-- [ ] Load testing
-- [ ] Security scanning
+- Add automated JSON-schema and export linting.
+- Add dedicated secret scanning.
+- Add repeatable mocked integration tests where practical.
+- Add version-specific import smoke tests and documented n8n version compatibility.
