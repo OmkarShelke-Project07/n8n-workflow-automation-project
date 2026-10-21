@@ -43,13 +43,7 @@
         0
       ],
       "id": "edb2a61c-e504-462c-ae49-6b429f0b4532",
-      "name": "Pinecone Vector Store",
-      "credentials": {
-        "pineconeApi": {
-          "id": "4WHexRw8WghCnx7T",
-          "name": "Pinecone account"
-        }
-      }
+      "name": "Pinecone Vector Store"
     },
     {
       "parameters": {
@@ -62,13 +56,7 @@
         208
       ],
       "id": "fb460ece-1397-40d5-9503-94424761ee57",
-      "name": "Embeddings OpenAI",
-      "credentials": {
-        "openAiApi": {
-          "id": "57oQQat07bnPKp7Z",
-          "name": "n8n free OpenAI API credits"
-        }
-      }
+      "name": "Embeddings OpenAI"
     },
     {
       "parameters": {
@@ -172,13 +160,7 @@
         288
       ],
       "id": "bd0ff440-32c5-40cc-81ff-1bbb0651a816",
-      "name": "Pinecone Vector Store1",
-      "credentials": {
-        "pineconeApi": {
-          "id": "4WHexRw8WghCnx7T",
-          "name": "Pinecone account"
-        }
-      }
+      "name": "Pinecone Vector Store1"
     },
     {
       "parameters": {
@@ -191,13 +173,7 @@
         464
       ],
       "id": "01763039-a4a1-4996-9405-663608fe0543",
-      "name": "Embeddings OpenAI1",
-      "credentials": {
-        "openAiApi": {
-          "id": "57oQQat07bnPKp7Z",
-          "name": "n8n free OpenAI API credits"
-        }
-      }
+      "name": "Embeddings OpenAI1"
     },
     {
       "parameters": {
@@ -216,13 +192,7 @@
         288
       ],
       "id": "0f24948a-8cbb-48ad-a92a-a5678512e7c7",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "57oQQat07bnPKp7Z",
-          "name": "n8n free OpenAI API credits"
-        }
-      }
+      "name": "OpenAI Chat Model"
     },
     {
       "parameters": {
@@ -258,16 +228,9 @@
         128
       ],
       "id": "f61c1486-c2be-429e-a9d0-4e4fa690cc52",
-      "name": "OpenAI Chat Model1",
-      "credentials": {
-        "openAiApi": {
-          "id": "57oQQat07bnPKp7Z",
-          "name": "n8n free OpenAI API credits"
-        }
-      }
+      "name": "OpenAI Chat Model1"
     }
   ],
-  "pinData": {},
   "connections": {
     "On form submission": {
       "main": [
@@ -386,12 +349,6 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "8937c58a-3eba-4110-9dcb-cd68861f8ac3",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "3d75d9b7bce94171842c8fdffc480c4bae15f9145cd367da53de4d4e874ed62b"
-  },
   "nodeGroups": [],
-  "id": "5p1zdfQYAbihcHzJ",
   "tags": []
 }
