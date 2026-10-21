@@ -1,53 +1,48 @@
 # RAG Document Agent
 
-This project is a document Q&A workflow built with n8n, OpenAI, and Pinecone. The goal is to let someone ask a question about a PDF and get an answer based on the document content, instead of searching through the file manually.
+A retrieval-augmented generation (RAG) workflow that indexes PDF content in a Pinecone vector store and uses retrieved passages to help answer questions about the document.
 
-## How it works
+## At a glance
 
-There are two parts to the workflow.
+- **Input:** A PDF for indexing and a question submitted through the n8n chat trigger.
+- **Processing:** Extract/load document content, split it into chunks, create embeddings, retrieve relevant passages, and pass the retrieved context to a chat model.
+- **Output:** A generated answer based on the retrieved document context.
+- **Tools:** n8n, OpenAI embeddings and chat model, Pinecone vector store.
 
-**1. Add a document**
+## Workflow outline
 
-`Upload PDF → Extract text → Split into chunks → Create embeddings → Store in Pinecone`
+**Index a document**
 
-**2. Ask a question**
+`PDF upload → Load document → Split into chunks → Create embeddings → Store vectors in Pinecone`
 
-`Question → Search Pinecone → Retrieve relevant text → Send context to the model → Generate an answer`
+**Ask a question**
 
-The retrieved text gives the model context for its answer. Responses should still be checked against the original document, especially when the information matters.
+`Chat question → Retrieve relevant vectors → Add context to the chat model → Generate answer`
 
-## Tools used
+The exported workflow contains nodes for both document ingestion and chat-based question answering. Retrieved context can improve relevance, but it does not guarantee correctness or prevent the model from making mistakes.
 
-- **n8n** — connects the ingestion and chat steps
-- **OpenAI embeddings** — turns text into vectors for searching
-- **OpenAI chat model** — drafts an answer using retrieved context
-- **Pinecone** — stores and searches the document vectors
-- **n8n Chat Trigger** — receives questions
+## Configuration
 
-The workflow notes currently reference `text-embedding-3-small` for embeddings and `gpt-4.1-mini` for answers. Check the model settings in the exported workflow before running it.
+1. Import `workflow.json` into n8n.
+2. Add your OpenAI and Pinecone credentials to the relevant nodes.
+3. Configure the Pinecone index. Verify that its vector dimension and metric are compatible with the selected embedding configuration.
+4. Review the document loader, chunking settings, chat trigger, and memory settings.
+5. Upload a small, non-confidential PDF, run the ingestion path, and then ask questions whose answers you can check in the source.
 
-## Input and output
+The current project notes reference `text-embedding-3-small` and `gpt-4.1-mini`; confirm the exact model selections in n8n before running the export.
 
-- **Input:** a PDF to index, followed by a question about its content.
-- **Output:** a response based on the text returned by the document search.
+## Manual test checklist
 
-## Before you run it
+- [ ] Ask a question whose answer is clearly present in the document.
+- [ ] Ask a question that the document does not answer and check whether the response communicates uncertainty.
+- [ ] Ask a question that requires details from separate sections of the document.
+- [ ] Test an empty or unreadable document and review the error behavior.
+- [ ] Confirm that the indexed content belongs to the intended Pinecone index.
 
-1. Import the workflow into n8n.
-2. Add your OpenAI and Pinecone credentials.
-3. Set the Pinecone index and confirm its dimension matches the embedding model.
-4. Check the upload and chat settings.
-5. Upload a small test PDF and ask questions whose answers you can verify.
+## Notes and limitations
 
-Keep credentials in n8n rather than in the exported workflow. Be careful about uploading confidential documents to external AI services.
+- Treat answers as assistance, not as a replacement for checking the source document.
+- Do not upload confidential documents to external services unless the data handling arrangements allow it.
+- Useful next improvements include page/source references, a retrieval relevance threshold, re-indexing updated documents, and support for DOCX/TXT.
 
-## Cases worth checking
-
-Ask a question clearly answered by the PDF, one that is not covered, and one that needs information from different parts of the file. Also try an empty or unreadable PDF and check how the workflow responds.
-
-## Ideas for later
-
-- Show the source document or page with each answer.
-- Add a relevance threshold for retrieved text.
-- Re-index documents when their contents change.
-- Add support for formats such as DOCX and TXT.
+**Related files:** [Architecture](./architecture.md) · [Test cases](../../tests/rag-agent/test-cases.md)
