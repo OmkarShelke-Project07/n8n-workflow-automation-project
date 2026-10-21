@@ -1,44 +1,41 @@
 # AI Content Generation
 
-This workflow uses Gemini to draft social media content from a topic and brief, then prepares posts for LinkedIn and Facebook. It also uses Pollinations.ai for an image and logs the post details in Google Sheets.
+Generates social media copy from a topic and brief, requests an image from Pollinations.ai, publishes to configured LinkedIn and Facebook destinations, and logs post details to Google Sheets.
 
-I used it to explore how much of the repeatable content workflow can be connected in n8n. The generated copy and image should still be reviewed before anything is published.
+## At a glance
 
-## How it works
+- **Input:** Topic, short brief, and tone (pre-filled in the example Set node).
+- **Processing:** Generate platform-specific captions, hashtags, a call to action and image prompt; request an image; pass content to the connected publishing nodes.
+- **Output:** A LinkedIn post, a Facebook post, and rows in the configured log sheet when the integrations succeed.
+- **Tools:** n8n, Google Gemini, Pollinations.ai, LinkedIn, Facebook Graph API, Google Sheets.
 
-`Enter topic and brief → Generate copy → Format the content → Create image → Publish → Log result`
+The workflow also asks the model to generate Instagram caption copy, but the current export does **not** include an Instagram publishing node.
 
-The workflow is set up for platform-specific captions, hashtags, a call to action, and an image prompt. The exact publishing steps depend on the connected social accounts.
+## Workflow outline
 
-## Tools used
+`Manual trigger → Set topic/brief/tone → Check required input → Gemini output → Image request → LinkedIn / Facebook → Log results`
 
-- **n8n** — connects the steps
-- **Google Gemini** — drafts the content
-- **Pollinations.ai** — generates an image
-- **LinkedIn and Facebook** — publishing destinations
-- **Google Sheets** — records post details
+The current export is a starting point, not a guarantee that publishing will work without editing. Verify the structured output schema and field mapping, the generated image response/binary handling, platform permissions, and the values written to the log sheet before enabling publishing.
 
-## Input and output
+## Configuration
 
-The input includes a topic, a short brief, and the tone to use. The workflow can prepare platform-specific copy and an image, publish through the connected accounts, and record the result in a sheet.
+1. Import `workflow.json` into n8n and reconnect Google Gemini, LinkedIn, and Google Sheets credentials.
+2. Replace `YOUR_LINKEDIN_PERSON_ID` and `YOUR_SOCIAL_POST_LOG_SHEET_ID` with your own resource values.
+3. Configure `FACEBOOK_PAGE_ID` and `FACEBOOK_ACCESS_TOKEN` as supported runtime environment variables, or replace those expressions with a supported credential-based authentication setup. Confirm the n8n environment allows the workflow to read those variables.
+4. Review the Facebook Graph API endpoint/version, image URL or binary mapping, output parser schema, caption extraction expressions, and Sheet column names.
+5. Use a test page/account and non-sensitive content. Verify the draft, image, post, and log before allowing public publishing.
 
-## Before you run it
+## Manual test checklist
 
-1. Import the workflow into n8n.
-2. Add your Gemini and social platform credentials.
-3. Check the required fields and account permissions.
-4. Test with a harmless draft or test account before publishing publicly.
-5. Review the generated text and image yourself before posting.
+- [ ] Missing topic or brief stops the workflow with a clear error.
+- [ ] Model output contains every field expected by the parser and caption expressions.
+- [ ] The image request returns an image in the format expected by downstream nodes.
+- [ ] LinkedIn and Facebook authentication and permissions work on test destinations.
+- [ ] The log records the correct post ID, caption, time, and status.
+- [ ] One platform failing does not leave the run looking fully successful.
 
-Social platform permissions and APIs can change, so check the connected account setup if publishing fails. Don't keep access tokens in the exported workflow.
+## Publishing safety
 
-## Cases worth checking
+This workflow can publish public content. Keep it inactive while configuring it, review generated text and images before posting, and never store access tokens in workflow JSON or Git. Revoke any token that may have been exposed in an earlier commit.
 
-Try a missing topic, an image-generation failure, and a failure on one of the publishing steps. Confirm what is logged and whether the other steps continue as expected.
-
-## Ideas for later
-
-- Add an approval step before publishing.
-- Add scheduling and post-performance tracking.
-- Generate image alt text.
-- Test different caption styles and compare the results.
+**Related files:** [Architecture](./architecture.md)
