@@ -19,13 +19,7 @@
       ],
       "id": "acecdf06-3a33-41ab-977d-a1afb965b8aa",
       "name": "Notify Extraction Error",
-      "webhookId": "84dd30f2-f522-4c0f-b1b6-2fa849fd1d39",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "84dd30f2-f522-4c0f-b1b6-2fa849fd1d39"
     },
     {
       "parameters": {
@@ -45,13 +39,7 @@
       ],
       "id": "fb2f3392-0f51-457f-9a04-9f1643718d61",
       "name": "Notify AI Extraction Failed",
-      "webhookId": "84cdebc4-d2a9-4ecf-b27c-7a8fd539eb89",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "84cdebc4-d2a9-4ecf-b27c-7a8fd539eb89"
     },
     {
       "parameters": {
@@ -71,13 +59,7 @@
       ],
       "id": "ca70e53e-c547-41c3-b23c-85eb9aee1683",
       "name": "Notify Storage Error",
-      "webhookId": "ad454513-d9d2-47bf-a77a-59e9b9aea6db",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "ad454513-d9d2-47bf-a77a-59e9b9aea6db"
     },
     {
       "parameters": {
@@ -96,13 +78,7 @@
         688
       ],
       "id": "297242bb-4af7-41a7-840e-d206ee535f5a",
-      "name": "Download file1",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "R9x24cuR61fZFjgM",
-          "name": "Google Drive account"
-        }
-      }
+      "name": "Download file1"
     },
     {
       "parameters": {},
@@ -123,7 +99,7 @@
           "value": "YOUR_INVOICE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "YOUR_INVOICE_SHEET",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_INVOICE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -259,12 +235,6 @@
       ],
       "id": "afb5eb87-46a1-4e3d-a8b2-3903049746f9",
       "name": "Append or update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "vHendSFoGRFwM6CD",
-          "name": "Google Sheets account"
-        }
-      },
       "onError": "continueRegularOutput"
     },
     {
@@ -287,13 +257,7 @@
       ],
       "id": "4435f028-ee13-4b11-8a8f-d3c001707458",
       "name": "Send a message",
-      "webhookId": "553b5964-9880-4995-8069-c643fb57f291",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "553b5964-9880-4995-8069-c643fb57f291"
     },
     {
       "parameters": {
@@ -446,13 +410,7 @@
       ],
       "id": "5551b441-c96c-4f30-afe1-342e5d65f092",
       "name": "Notify Duplicate1",
-      "webhookId": "46b1dbe0-f5dd-48d4-9b90-df05c0f60a7b",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "46b1dbe0-f5dd-48d4-9b90-df05c0f60a7b"
     },
     {
       "parameters": {
@@ -538,13 +496,7 @@
       ],
       "id": "6f765703-9eae-4ff7-9981-ac284b2b9dcf",
       "name": "Notify Invalid File1",
-      "webhookId": "bbe55cb6-c962-4de8-8563-95c6fec03de9",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "bbe55cb6-c962-4de8-8563-95c6fec03de9"
     },
     {
       "parameters": {
@@ -564,13 +516,7 @@
       ],
       "id": "9ff06ba3-0c4e-4699-9ee4-9e22cee0affa",
       "name": "Notify Critical Error1",
-      "webhookId": "78d2fa75-b57f-4da5-9c0a-033b6eb69e1a",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "78d2fa75-b57f-4da5-9c0a-033b6eb69e1a"
     },
     {
       "parameters": {
@@ -668,7 +614,7 @@
           "value": "YOUR_INVOICE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "YOUR_INVOICE_SHEET",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_INVOICE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -696,12 +642,6 @@
       ],
       "id": "110d1089-bd07-4200-a5a9-6751258acb4c",
       "name": "Verify the Data1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "vHendSFoGRFwM6CD",
-          "name": "Google Sheets account"
-        }
-      },
       "onError": "continueErrorOutput"
     },
     {
@@ -846,7 +786,7 @@
           "value": "YOUR_INVOICE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "YOUR_INVOICE_SHEET",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_INVOICE_SHEET_ID"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -992,12 +932,6 @@
       ],
       "id": "84452d14-e226-42e8-8f27-83d912ecc818",
       "name": "Save the valid data1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "vHendSFoGRFwM6CD",
-          "name": "Google Sheets account"
-        }
-      },
       "onError": "continueErrorOutput"
     },
     {
@@ -1018,13 +952,7 @@
       ],
       "id": "9efce250-2448-4638-a2f0-996349254f55",
       "name": "Processed the invoice successfully1",
-      "webhookId": "ee3e0a88-70f9-4d41-9382-5b844891ea6d",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "dsLe1ms4SLxJwCSs",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "ee3e0a88-70f9-4d41-9382-5b844891ea6d"
     },
     {
       "parameters": {},
@@ -1049,7 +977,7 @@
         "triggerOn": "specificFolder",
         "folderToWatch": {
           "__rl": true,
-          "value": "1aUO_nhfZxCxTB1Znisx153HHQF_F4Fof",
+          "value": "YOUR_GOOGLE_DRIVE_FOLDER_ID",
           "mode": "list",
           "cachedResultName": "Phase AI _Task",
           "cachedResultUrl": "https://drive.google.com/drive/folders/YOUR_DRIVE_FOLDER_ID"
@@ -1066,13 +994,7 @@
         688
       ],
       "id": "e1f4d6ca-922c-4b3e-896e-1013c9c4830d",
-      "name": "Google Drive Trigger",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "R9x24cuR61fZFjgM",
-          "name": "Google Drive account"
-        }
-      }
+      "name": "Google Drive Trigger"
     },
     {
       "parameters": {
@@ -1109,13 +1031,7 @@
         704
       ],
       "id": "c72e85e6-3e10-4ab2-b259-b15981bbad14",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "X8nCy5Z8x0NayrlS",
-          "name": "Google Gemini(PaLM) Api account 2"
-        }
-      }
+      "name": "Google Gemini Chat Model"
     },
     {
       "parameters": {
@@ -1182,7 +1098,6 @@
       "onError": "continueErrorOutput"
     }
   ],
-  "pinData": {},
   "connections": {
     "Download file1": {
       "main": [
@@ -1473,11 +1388,6 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "46089dd8-e794-449f-a95b-d7c028cf81b1",
-  "meta": {
-    "instanceId": "0289ee7aa20af5358e507c8edcc04743066127abf2efe0abe80cad0856baa0f4"
-  },
   "nodeGroups": [],
-  "id": "fXgURgufOGyeI6xd",
   "tags": []
 }
