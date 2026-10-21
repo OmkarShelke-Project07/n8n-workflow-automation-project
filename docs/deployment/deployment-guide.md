@@ -1,99 +1,43 @@
-# Deployment Guide
+# Deployment and Import Guide
 
-## Overview
+This repository stores n8n workflow JSON exports and documentation. It does **not** include a ready-to-run production server configuration, and copying the `workflows/` directory into a container does not automatically import those workflows.
 
-This guide covers deployment options for the n8n workflows.
+For current installation and configuration options, use the [official n8n Docker documentation](https://docs.n8n.io/hosting/installation/docker/).
 
-## Deployment Options
+## Option 1: n8n Cloud
 
-### 1. n8n Cloud
-- Easiest setup
-- Managed infrastructure
-- Pay per execution
-- Recommended for getting started
+1. Create or open your n8n workspace.
+2. Open the project folder in this repository and read its README.
+3. Import the project's `workflow.json` using n8n's workflow import option.
+4. Configure credentials, resource IDs, recipients, webhook callbacks, and any required environment variables.
+5. Test with sample data and keep the workflow inactive until the result has been checked.
 
-### 2. Self-Hosted n8n
-- Full control
-- Custom configurations
-- Requires server management
-- Better for production at scale
+## Option 2: Self-hosted with Docker
 
-### 3. Docker
-- Containerized deployment
-- Portable across environments
-- Good for development/testing
-- Can be used in production
+Docker runs n8n in a container. For a persistent setup, use the official image and keep n8n's data directory in a persistent volume or another supported persistent storage configuration. Do not rely on a temporary container filesystem for important workflows or credentials.
 
-### 4. Kubernetes
-- Enterprise-grade
-- Highly scalable
-- Complex setup
-- For high-volume deployments
+A basic local learning setup is shown in the official guide. Before exposing a self-hosted instance to the internet:
 
-## Quick Start (n8n Cloud)
+- Configure HTTPS and the correct public webhook/base URL.
+- Protect the editor with n8n's supported user-management and authentication features.
+- Set and protect a stable n8n encryption key; keep it outside Git and back it up securely.
+- Persist n8n data and schedule backups.
+- Keep the n8n version updated and limit network access to the editor and webhook endpoints.
+- Review execution-data retention and error monitoring for the data your workflows handle.
 
-1. Sign up for n8n Cloud
-2. Import workflow JSON
-3. Configure credentials
-4. Test execution
-5. Activate workflow
+## Workflow import is separate from deployment
 
-## Docker Setup
+Importing a JSON file creates a workflow in n8n; it does not provision API accounts, configure OAuth consent, create Google Sheets, create Pinecone indexes, set Vapi call assistants, or grant social publishing permissions. Those integrations must be configured separately.
 
-```dockerfile
-FROM n8nio/n8n:latest
+After import, reconnect the credentials that the export no longer contains. Replace every `YOUR_...` placeholder and review the relevant project README.
 
-# Copy workflows
-COPY ./workflows /home/node/.n8n/workflows
+## Environment variables used by example workflows
 
-# Set environment
-ENV N8N_BASIC_AUTH_ACTIVE=true
-```
+Some HTTP Request nodes use expressions that read runtime variables:
 
-## Environment Configuration
+- Lead qualification: `VAPI_ACCESS_TOKEN`, `VAPI_ASSISTANT_ID`, `VAPI_PHONE_NUMBER_ID`.
+- Social content publishing: `FACEBOOK_PAGE_ID`, `FACEBOOK_ACCESS_TOKEN`.
 
-Required environment variables:
+Availability of environment variables in expressions depends on the n8n hosting configuration. If the expression cannot read a variable, use a supported credential-based configuration or configure the self-hosted runtime appropriately. Never place a real token directly into the JSON export.
 
-```env
-# n8n Core
-N8N_HOST=your-host.com
-N8N_PORT=5678
-N8N_PROTOCOL=https
-
-# Database
-DB_TYPE=postgresdb
-DB_POSTGRESDB_HOST=localhost
-DB_POSTGRESDB_DATABASE=n8n
-
-# Execution
-EXECUTIONS_DATA_PRUNE=true
-EXECUTIONS_DATA_MAX_AGE=168
-```
-
-## Production Checklist
-
-- [ ] HTTPS configured
-- [ ] Database backups
-- [ ] Monitoring setup
-- [ ] Error alerting
-- [ ] Credential rotation
-- [ ] Rate limiting
-- [ ] Log retention
-- [ ] Performance baseline
-
-## Monitoring
-
-Recommended tools:
-- Prometheus for metrics
-- Grafana for dashboards
-- n8n execution logs
-- API response monitoring
-
-## Scaling
-
-For high-volume workflows:
-- Use queue mode
-- Configure worker nodes
-- Implement rate limiting
-- Add caching layer
-- Database connection pooling
+See the [security practices](../security/security-practices.md) and [testing strategy](../testing/testing-strategy.md) before enabling a workflow.
