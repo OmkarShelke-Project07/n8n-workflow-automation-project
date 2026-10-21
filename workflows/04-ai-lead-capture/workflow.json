@@ -58,23 +58,17 @@
         400
       ],
       "id": "edd2cb5f-2f1c-4504-993f-c72ef826b440",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "442o56KMsC6PWeqs",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
+      "name": "Google Gemini Chat Model"
     },
     {
       "parameters": {
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1a1UorgfBXjQ0PapQERO0acY0JkGOknrOD_DINFBuzo4",
+          "value": "YOUR_GOOGLE_SHEET_ID",
           "mode": "list",
           "cachedResultName": "DataStored",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -135,13 +129,7 @@
         256
       ],
       "id": "a4472deb-54d6-4aef-9579-ccabcd09c8a5",
-      "name": "Append or update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "D8JzsCuENCctH9on",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
+      "name": "Append or update row in sheet"
     },
     {
       "parameters": {
@@ -260,13 +248,7 @@
       ],
       "id": "0464ed10-3ca3-4f27-ae0a-8cc3aac99bd0",
       "name": "Welcome message to team",
-      "webhookId": "df292fc2-09bb-416b-9ff6-9d957859b34f",
-      "credentials": {
-        "slackOAuth2Api": {
-          "id": "yIxQ7lEDOtKrPfxI",
-          "name": "Slack OAuth2 API"
-        }
-      }
+      "webhookId": "df292fc2-09bb-416b-9ff6-9d957859b34f"
     },
     {
       "parameters": {
@@ -286,13 +268,7 @@
       ],
       "id": "09d38c7b-d179-4613-a3fb-1ad52dbcd892",
       "name": "Send welcome mail to user",
-      "webhookId": "590e62ec-2e07-4ae6-a2d9-b3995efe5294",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "pZfHxEuEpEi2lw2n",
-          "name": "Gmail OAuth2 API"
-        }
-      }
+      "webhookId": "590e62ec-2e07-4ae6-a2d9-b3995efe5294"
     },
     {
       "parameters": {
@@ -311,19 +287,6 @@
       "name": "Sticky Note5"
     }
   ],
-  "pinData": {
-    "On form submission": [
-      {
-        "json": {
-          "Full Name": "Omkar",
-          "Email ID": "your-email@example.com",
-          "Message": "Design a website, My budget is 10,000",
-          "submittedAt": "2026-05-25T11:51:22.350+05:30",
-          "formMode": "test"
-        }
-      }
-    ]
-  },
   "connections": {
     "On form submission": {
       "main": [
@@ -402,11 +365,5 @@
     "executionTimeout": -1,
     "availableInMCP": false
   },
-  "versionId": "dc31984f-9010-4159-bf56-30dee18eed42",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "4db524ab988e70da38e7d949859a2cb76ff0032f61c01e08edec972db2f9011c"
-  },
-  "id": "pWs9Bla75QUgYXaJ",
   "tags": []
 }
