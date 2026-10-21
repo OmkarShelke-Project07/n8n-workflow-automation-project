@@ -41,7 +41,7 @@
     },
     {
       "parameters": {
-        "person": "D_IporRDaf",
+        "person": "YOUR_LINKEDIN_PERSON_ID",
         "text": "={{ $json.output.cities[1].split('LinkedIn Caption:')[1] }}\n{{ $json.output.cities[3].split('Hashtags:')[1] }}",
         "shareMediaCategory": "IMAGE",
         "additionalFields": {}
@@ -53,18 +53,12 @@
         -240
       ],
       "id": "e143a444-1a94-4d66-ac9c-b8e39d586294",
-      "name": "Create a post",
-      "credentials": {
-        "linkedInOAuth2Api": {
-          "id": "glCUwDOXAx2hJEwm",
-          "name": "LinkedIn account"
-        }
-      }
+      "name": "Create a post"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://graph.facebook.com/v22.0/1074578925746023/photos",
+        "url": "={{ 'https://graph.facebook.com/v22.0/' + $env.FACEBOOK_PAGE_ID + '/photos' }}",
         "sendBody": true,
         "contentType": "multipart-form-data",
         "bodyParameters": {
@@ -79,7 +73,7 @@
             },
             {
               "name": "access_token",
-              "value": "EABAI261ZBpkABRQIS2F0AxFvqCP7UzYzFKxg3lcuod8gSgDUbz6s3lrV6qXqy0jVSV0gSwMoR4u3U5ca90atA8ZAjcZCqbI84uIjF2sgX4gtvHqF6DDd97rBuUdfwgOiOTjJp0AIjosZC00ZA1wZBt9aHncXOTAs80UjZC74ICLVLagH2KBsYuhd8L3AiMpA7ZBiDRCRFNIJ0GekIMZBlj4ZA2mO7Ynn6wnW9yquvoyxqWl08ZD"
+              "value": "={{ $env.FACEBOOK_ACCESS_TOKEN }}"
             }
           ]
         },
@@ -111,23 +105,17 @@
         96
       ],
       "id": "48c9d149-32fd-408f-8cfe-37d16039a7c2",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "gAoGt6NNPOQMjcMQ",
-          "name": "Google Gemini(PaLM) Api account 2"
-        }
-      }
+      "name": "Google Gemini Chat Model"
     },
     {
       "parameters": {
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc",
+          "value": "YOUR_SOCIAL_POST_LOG_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Log all outputs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SOCIAL_POST_LOG_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -211,23 +199,17 @@
         -240
       ],
       "id": "b51338a3-d8df-4c04-bda6-be8a275ba470",
-      "name": "Log all output",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "HTWj6RAQeeHf4Zf8",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
+      "name": "Log all output"
     },
     {
       "parameters": {
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1ASVirnNiU19_WGlCLK28rsSGT6MM6ys5-W-8nbCgHwc",
+          "value": "YOUR_SOCIAL_POST_LOG_SHEET_ID",
           "mode": "list",
           "cachedResultName": "Log all outputs",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/YOUR_SOCIAL_POST_LOG_SHEET_ID/edit#gid=0"
         },
         "sheetName": {
           "__rl": true,
@@ -307,13 +289,7 @@
         -48
       ],
       "id": "f71a3f47-11b0-408e-9638-75b6c5c17b00",
-      "name": "Log all outputs",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "HTWj6RAQeeHf4Zf8",
-          "name": "Google Sheets OAuth2 API"
-        }
-      }
+      "name": "Log all outputs"
     },
     {
       "parameters": {
@@ -448,7 +424,6 @@
       "name": "Input Missing"
     }
   ],
-  "pinData": {},
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
@@ -572,11 +547,5 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "531984b7-6a24-4d66-8320-3e2991602e75",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "86b95c8a315df9c445a52a4d262b68ee233e2a5196cf8df033cf84c069ebbfa4"
-  },
-  "id": "dKUAqjCR5MdkIedR",
   "tags": []
 }
