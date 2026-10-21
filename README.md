@@ -1,76 +1,179 @@
-# n8n Workflow Automation Projects
+<div align="center">
 
-A practical portfolio of workflow automations built with **n8n, AI models, APIs, and business tools**. Each project includes an importable workflow export, a project guide, and an architecture note.
+# n8n Workflow Automation Portfolio
 
-The examples cover document processing, lead follow-up, document Q&A, team briefings, and social content. They are portfolio demos: connect your own accounts, review the configuration, and test with sample data before using them in a real process.
+### Practical automations with n8n, AI models, APIs, and business tools
 
-![Validate Workflows](https://github.com/OmkarShelke-Project07/n8n-workflow-automation-project/actions/workflows/validate.yml/badge.svg)
+I build workflows that connect business processes with AI — from invoice validation and lead qualification to document Q&A and content operations.
 
-## Projects
+[Explore Projects](#-featured-projects) · [Getting Started](#-run-a-workflow) · [Testing & Security](#-testing--security) · [Connect with Omkar](#-about)
 
-| # | Project | Use case | Main tools |
-|---|---|---|---|
-| 01 | [AI Invoice Processing](./workflows/01-ai-invoice-processing/) | Extract invoice fields, check required values and possible duplicates, and route records for processing or review | n8n, Gemini, Google Drive, Sheets, Gmail |
-| 02 | [AI Lead Qualification](./workflows/02-ai-lead-qualification/) | Start an AI voice call for an eligible lead and record call outcomes | n8n, Vapi, Google Sheets, webhooks |
-| 03 | [RAG Document Agent](./workflows/03-rag-document-agent/) | Index PDF content and answer questions using retrieved document passages | n8n, OpenAI, Pinecone |
-| 04 | [AI Lead Capture](./workflows/04-ai-lead-capture/) | Capture an enquiry, draft a welcome email, save the lead, and notify the team | n8n, Gemini, Google Sheets, Gmail, Slack |
-| 05 | [Department Intelligence Agent](./workflows/05-department-intelligence-agent/) | Summarise news items and send department-specific email briefings | n8n, RSS, Gemini, Gmail |
-| 06 | [AI Content Generation](./workflows/06-ai-content-generation/) | Generate social copy and image prompts, publish to configured platforms, and log results | n8n, Gemini, Pollinations.ai, LinkedIn, Facebook, Google Sheets |
+![Workflow validation](https://github.com/OmkarShelke-Project07/n8n-workflow-automation-project/actions/workflows/validate.yml/badge.svg)
+![n8n](https://img.shields.io/badge/Built%20with-n8n-EA4B71?style=flat-square&logo=n8n&logoColor=white)
+![AI Workflows](https://img.shields.io/badge/Focus-AI%20Automation-2563EB?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-64748B?style=flat-square)
 
-## Get started
+</div>
 
-1. **Choose a project.** Read the README inside its folder before importing the JSON.
-2. **Import the workflow.** In n8n, use the workflow import option and select that project's `workflow.json`.
-3. **Reconnect your accounts.** The public exports do not include saved n8n credential references. Select your own credentials for the relevant nodes.
-4. **Replace placeholders.** Values such as `YOUR_GOOGLE_SHEET_ID`, `YOUR_GOOGLE_DRIVE_FOLDER_ID`, and `YOUR_LINKEDIN_PERSON_ID` are examples, not working resource IDs.
-5. **Test before enabling.** Use a test sheet, safe sample files, and accounts/numbers you control. Confirm the results in each connected service before activating the workflow.
+---
 
-All exported workflows are inactive by default. Some projects need additional setup beyond credentials; read the project's **Configuration** section.
+## 👋 What this repository demonstrates
 
-## Environment variables
+A portfolio of six n8n workflow examples showing how AI models, APIs, webhooks, and everyday business tools can work together.
 
-Most integrations should use n8n's credential store. Two workflows also use environment expressions in HTTP requests:
+- **Business process automation** — extract, validate, route, and record information.
+- **AI integrations** — connect Gemini or OpenAI models to defined workflow steps.
+- **API and webhook handling** — exchange data between services.
+- **Operational thinking** — document configuration, failure paths, security considerations, and tests.
 
-- **AI Lead Qualification:** `VAPI_ACCESS_TOKEN`, `VAPI_ASSISTANT_ID`, and `VAPI_PHONE_NUMBER_ID`.
-- **AI Content Generation:** `FACEBOOK_PAGE_ID` and `FACEBOOK_ACCESS_TOKEN`.
+> These are portfolio examples, not turnkey production systems. Review each project guide, configure your own accounts, and test with safe sample data before use.
 
-The relevant n8n runtime must permit environment-variable access in expressions for these expressions to work. If your n8n plan or hosting setup does not permit this, replace the expressions with supported credential-based configuration. Never place real tokens in a workflow export or commit a populated `.env` file.
+## 🚀 Featured projects
 
-See [deployment notes](./docs/deployment/deployment-guide.md) and [security practices](./docs/security/security-practices.md).
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>01 · AI Invoice Processing</h3>
+      <p>Extract invoice fields, validate required values, check for possible duplicates, and route records for processing or review.</p>
+      <p><strong>Stack:</strong> n8n · Google Gemini · Google Drive · Sheets · Gmail</p>
+      <a href="./workflows/01-ai-invoice-processing/">Project guide & workflow →</a>
+    </td>
+    <td width="50%" valign="top">
+      <h3>02 · AI Voice Lead Qualification</h3>
+      <p>Start an AI voice call for an eligible lead and process call outcomes through a webhook.</p>
+      <p><strong>Stack:</strong> n8n · Vapi · Webhooks · Google Sheets</p>
+      <a href="./workflows/02-ai-lead-qualification/">Project guide & workflow →</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>03 · RAG Document Agent</h3>
+      <p>Index PDF content in a vector store and answer questions using retrieved document context.</p>
+      <p><strong>Stack:</strong> n8n · OpenAI · Embeddings · Pinecone</p>
+      <a href="./workflows/03-rag-document-agent/">Project guide & workflow →</a>
+    </td>
+    <td width="50%" valign="top">
+      <h3>04 · AI Lead Capture</h3>
+      <p>Capture an enquiry, draft a welcome email, save lead details, and route configured notifications.</p>
+      <p><strong>Stack:</strong> n8n · Gemini · Google Sheets · Gmail · Slack</p>
+      <a href="./workflows/04-ai-lead-capture/">Project guide & workflow →</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>05 · Department Intelligence Agent</h3>
+      <p>Collect news data, summarize relevant items, and prepare department-specific email briefings.</p>
+      <p><strong>Stack:</strong> n8n · HTTP Request · Gemini · Gmail</p>
+      <a href="./workflows/05-department-intelligence-agent/">Project guide & workflow →</a>
+    </td>
+    <td width="50%" valign="top">
+      <h3>06 · AI Content Generation</h3>
+      <p>Generate social copy and image content, publish through configured integrations, and log outputs.</p>
+      <p><strong>Stack:</strong> n8n · Gemini · Pollinations.ai · LinkedIn · Facebook · Sheets</p>
+      <a href="./workflows/06-ai-content-generation/">Project guide & workflow →</a>
+    </td>
+  </tr>
+</table>
 
-## Repository structure
+## 🧭 How the workflows fit together
+
+The projects follow a common automation pattern. Individual projects may use only some of these stages.
+
+```mermaid
+flowchart LR
+    A[Trigger<br/>Form · Schedule · Webhook] --> B[Collect data]
+    B --> C[Validate & transform]
+    C --> D[AI or business logic]
+    D --> E{Result}
+    E -->|Valid / successful| F[Save or send]
+    E -->|Missing / failed| G[Review or error path]
+```
+
+## 🛠️ Tools used
+
+<p>
+  <img alt="n8n" src="https://img.shields.io/badge/n8n-EA4B71?style=flat-square&logo=n8n&logoColor=white" />
+  <img alt="Google Gemini" src="https://img.shields.io/badge/Google%20Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white" />
+  <img alt="OpenAI" src="https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=openai&logoColor=white" />
+  <img alt="Pinecone" src="https://img.shields.io/badge/Pinecone-008B8B?style=flat-square&logo=pinecone&logoColor=white" />
+  <img alt="Google Sheets" src="https://img.shields.io/badge/Google%20Sheets-34A853?style=flat-square&logo=googlesheets&logoColor=white" />
+  <img alt="Gmail" src="https://img.shields.io/badge/Gmail-EA4335?style=flat-square&logo=gmail&logoColor=white" />
+  <img alt="REST APIs" src="https://img.shields.io/badge/REST%20APIs-475569?style=flat-square" />
+  <img alt="Webhooks" src="https://img.shields.io/badge/Webhooks-2563EB?style=flat-square" />
+</p>
+
+## ▶️ Run a workflow
+
+1. **Choose a project** from the cards above and read its README and architecture note.
+2. **Import the JSON** into your n8n instance using the workflow import option.
+3. **Configure credentials** for the services used by that workflow.
+4. **Replace example values** such as sheet IDs, folder IDs, phone numbers, and platform-specific IDs.
+5. **Run with test data** and inspect each node's output and the connected service.
+6. **Keep the workflow inactive** until you have verified the success and failure paths.
+
+All exported workflows are inactive by default. Some integrations require additional setup; follow the project's Configuration section.
+
+### Environment configuration
+
+Some HTTP request nodes use environment expressions:
+
+- **AI Lead Qualification:** `VAPI_ACCESS_TOKEN`, `VAPI_ASSISTANT_ID`, `VAPI_PHONE_NUMBER_ID`
+- **AI Content Generation:** `FACEBOOK_PAGE_ID`, `FACEBOOK_ACCESS_TOKEN`
+
+Your n8n hosting setup must allow the relevant environment-variable expressions. Where that is unavailable, use a supported credential configuration. Never commit real credentials or a populated `.env` file.
+
+## ✅ Testing & security
+
+The repository's GitHub Actions workflow checks JSON syntax, basic workflow structure, inactive exports, expected README files, and several common secret patterns.
+
+**These automated checks do not execute workflows or confirm that live integrations work.** Use the manual test guidance and project-specific test cases:
+
+- [Testing strategy](./docs/testing/testing-strategy.md)
+- [Deployment guide](./docs/deployment/deployment-guide.md)
+- [Security practices](./docs/security/security-practices.md)
+- [Invoice test cases](./tests/invoice-processing/test-cases.md)
+- [Lead qualification test cases](./tests/lead-qualification/test-cases.md)
+- [RAG agent test cases](./tests/rag-agent/test-cases.md)
+
+Before using a workflow with real data, test missing inputs, invalid model output, API failures, duplicate events where relevant, and downstream storage errors. Use synthetic or non-sensitive data whenever possible.
+
+**Credential history note:** The security guide records that an earlier social-content workflow contained a Facebook access token. If it was real, revoke or rotate it. Removing a secret from the current file does not remove it from earlier Git commits; review repository history if needed.
+
+## 📁 Repository structure
 
 ```text
 workflows/
-  01-ai-invoice-processing/
-  02-ai-lead-qualification/
-  03-rag-document-agent/
-  04-ai-lead-capture/
-  05-department-intelligence-agent/
-  06-ai-content-generation/
+├── 01-ai-invoice-processing/
+├── 02-ai-lead-qualification/
+├── 03-rag-document-agent/
+├── 04-ai-lead-capture/
+├── 05-department-intelligence-agent/
+└── 06-ai-content-generation/
+
 docs/
-  architecture/
-  deployment/
-  security/
-  testing/
+├── architecture/
+├── deployment/
+├── security/
+└── testing/
+
 tests/
-  invoice-processing/
-  lead-qualification/
-  rag-agent/
+├── invoice-processing/
+├── lead-qualification/
+└── rag-agent/
 ```
 
-Each project folder contains a `workflow.json`, a project README, and an architecture note. Test case matrices are currently included for invoice processing, lead qualification, and the RAG agent.
+## 👨‍💻 About
 
-## Validation
+**Omkar Shelke** · AI Automation Engineer · Pune, India
 
-The GitHub Actions workflow checks JSON syntax, basic workflow structure, inactive exports, expected README files, and several common secret patterns. **These checks do not execute the workflows or prove that live API integrations work.** Run the manual checks in each project guide after importing.
+I build workflow automations using n8n, AI models, APIs, webhooks, and business tools, alongside RPA experience with UiPath and Power Automate.
 
-## Security note
+- [GitHub profile](https://github.com/OmkarShelke-Project07)
+- [Email](mailto:shelkeomkar00@gmail.com)
+- [LinkedIn](https://www.linkedin.com/in/omkar-shelke07/)
 
-The latest exports have had saved credential references and identified account-specific resource values removed or replaced with placeholders. The social content export previously contained a hard-coded Facebook token; removing it from the current file does not remove it from earlier Git commits. **Revoke/rotate any token that may have been exposed**, and review Git history if the repository is shared.
+---
 
-## About
-
-Maintained by [Omkar Shelke](https://github.com/OmkarShelke-Project07).
-
-Licensed under the [MIT License](./LICENSE).
+<div align="center">
+  <sub>Built to demonstrate practical workflow design. Configure, test, and verify before production use.</sub>
+</div>
